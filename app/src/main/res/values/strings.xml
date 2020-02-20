@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Roomies</string>
+    <string name="welcome_back">Welcome Back Roomie</string>
+    <string name="read_it_together"></string>
+    <string name="skip">Skip</string>
+    <string name="login">Login</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="address">Department Address</string>
+    <string name="forget_password">Forget Password.?</string>
+    <string name="app_key">AIzaSyCDBJNU3zwheuVx_JtuYJ3aNu12Aizk3qE</string>
+    <string name="error_weak_password">Weak Password</string>
+    <string name="error_invalid_email">Incorrect mail</string>
+    <string name="error_user_exists">Mail address already signed up</string>
+    <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
 </resources>
