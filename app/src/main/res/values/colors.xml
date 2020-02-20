@@ -5,8 +5,11 @@
     <color name="colorAccent">#B9BBBD</color>
     <color name="colorBackground">#333C46</color>
     <color name="colorSplashText">#F0F0F0</color>
-    <color name="colorProgressBar">#FFCE511C</color>
+    <color name="colorProgressBar">#ee509b</color>
     <color name="colorTextView">#83898E</color>
-    <color name="colorLoginView">#ffc500</color>
+    <color name="colorLoginView">#4a5766</color>
+    <color name="colorButtonBackground">#30de51</color>
+    <color name="colorButtonAccent">#000000</color>
+
 
 </resources>

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Roomies</string>
-    <string name="welcome_back">Welcome Back Roomie</string>
+    <string name="welcome_back">Hi Roomie!</string>
     <string name="read_it_together"></string>
     <string name="skip">Skip</string>
     <string name="login">Login</string>
@@ -9,7 +9,7 @@
     <string name="password">Password</string>
     <string name="sign_up">Sign up</string>
     <string name="address">Department Address</string>
-    <string name="forget_password">Forget Password.?</string>
+    <string name="forget_password">Forget Password?</string>
     <string name="app_key">AIzaSyCDBJNU3zwheuVx_JtuYJ3aNu12Aizk3qE</string>
     <string name="error_weak_password">Weak Password</string>
     <string name="error_invalid_email">Incorrect mail</string>

@@ -6,12 +6,14 @@ import androidx.core.content.ContextCompat;
 import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.Window;
@@ -52,7 +54,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class LogInActivity extends AppCompatActivity{
-
 
 
     private static final String TAG = LogInActivity.class.getSimpleName();
@@ -104,7 +105,7 @@ public class LogInActivity extends AppCompatActivity{
             bookITextView.setVisibility(GONE);
             loadingProgressBar.setVisibility(GONE);
             rootView.setBackgroundColor(ContextCompat.getColor(LogInActivity.this, R.color.colorLoginView));
-            bookIconImageView.setImageResource(R.mipmap.ic_launcher);
+            bookIconImageView.setImageResource(R.mipmap.logo);
             startAnimation();
             timerHandler.postDelayed(timerRunnable, 3000);
         };
@@ -189,8 +190,12 @@ public class LogInActivity extends AppCompatActivity{
     }
 
     private void startAnimation() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
         ViewPropertyAnimator viewPropertyAnimator = bookIconImageView.animate();
-        viewPropertyAnimator.x(50f);
+        viewPropertyAnimator.x(width/2-bookIconImageView.getWidth()/2);
         viewPropertyAnimator.y(100f);
         viewPropertyAnimator.setDuration(1000);
         viewPropertyAnimator.setListener(new Animator.AnimatorListener() {
