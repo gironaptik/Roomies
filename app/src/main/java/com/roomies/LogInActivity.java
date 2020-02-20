@@ -54,6 +54,7 @@ import static android.view.View.VISIBLE;
 public class LogInActivity extends AppCompatActivity{
 
 
+
     private static final String TAG = LogInActivity.class.getSimpleName();
     private String apiKey;
     private ImageView bookIconImageView;
