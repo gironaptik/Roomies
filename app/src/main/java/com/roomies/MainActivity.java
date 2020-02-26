@@ -76,4 +76,9 @@ public class MainActivity extends AppCompatActivity{
         Intent activityChangeIntent = new Intent(MainActivity.this, LogInActivity.class);
         this.startActivity(activityChangeIntent);
     }
+
+    public void clickToaApartment(View view) {
+        Intent activityChangeIntent = new Intent(MainActivity.this, ApartmentActivity.class);
+        this.startActivity(activityChangeIntent);
+    }
 }

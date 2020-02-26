@@ -58,9 +58,18 @@
             android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logput"
+            android:text="Logout"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="402dp"
             android:onClick="clickToPlay"/>
+
+        <Button
+            android:id="@+id/apartment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apartment Intro"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="402dp"
+            android:onClick="clickToaApartment"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

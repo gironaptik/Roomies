@@ -21,11 +21,22 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
+    <string name="intro1">Stay up to date and connected with your roomies  about what happens and what is needed at your apartment</string>
+    <string name="create">Create a new apartment</string>
+    <string name="join"><u>Join to Apartment</u></string>
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="joinroom_title">Catch up with your Roomies</string>
+    <string name="joinroom_info">Enter your existing apartment code</string>
+    <string name="joinroom_code">Apartment Code</string>
+    <string name="joinroom_button">Join</string>
+    <string name="addroom_title">Customize your Apartment</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".NewRoomFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/upperLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#007BFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/proximabold"
+                android:text="@string/addroom_title"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="50dp"
+            android:layout_below="@+id/upperLayout"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximaregular"
+                android:text="Name Your House"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/apartmentName"
+                android:layout_width="281dp"
+                android:layout_height="wrap_content"
+                android:hint="Name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/proximaregular"
+                android:text="Address Your House"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/apartmentAddress"
+                android:layout_width="281dp"
+                android:layout_height="wrap_content"
+                android:hint="Address" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/proximaregular"
+                android:text="Apartment Number"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/apartmentNumber"
+                android:layout_width="281dp"
+                android:layout_height="wrap_content"
+                android:hint="Number" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="0"
+            android:background="#007BFF"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/newApartmentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximathin"
+                android:text="APPLY" />
+        </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>

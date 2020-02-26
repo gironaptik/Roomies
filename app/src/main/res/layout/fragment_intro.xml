@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/intro1frag"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00B0FF"
+    android:backgroundTint="#00B0FF"
+    tools:context=".IntroFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:id="@+id/introFragLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00B0FF">
+
+        <TextView
+            android:id="@+id/intro1title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/proximabold"
+            android:text="WELCOME"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:id="@+id/intro1image"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_below="@+id/intro1title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/intro1" />
+
+        <TextView
+            android:id="@+id/intro1lines"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/intro1image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/proximathin"
+            android:gravity="center"
+            android:lines="3"
+            android:maxLines="3"
+            android:singleLine="false"
+            android:text="@string/intro1"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/intro1lines"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/newRoomButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximaregular"
+                android:text="@string/create" />
+
+            <TextView
+                android:id="@+id/joinRoomButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/proximaregular"
+                android:text="@string/join" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>
