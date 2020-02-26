@@ -69,7 +69,6 @@ public class LogInActivity extends AppCompatActivity{
     private EditText mNewEmailField;
     private EditText mNewNameField;
     private EditText mNewPasswordField;
-    private AutoCompleteTextView mAddressField;
     private Button mLoginBtn;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -141,26 +140,6 @@ public class LogInActivity extends AppCompatActivity{
             mLoginBtn.setText("Join Us!");
             mLoginBtn.setTag(sign_up);
         });
-
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), apiKey);
-        }
-
-        mAddressField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                autoComplete();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
     }
 
     @Override
@@ -185,7 +164,6 @@ public class LogInActivity extends AppCompatActivity{
         mNewNameField = findViewById(R.id.newNameEditText);
         mNewEmailField = findViewById(R.id.newEmailEditText);
         mNewPasswordField = findViewById(R.id.newPasswordEditText);
-        mAddressField = findViewById(R.id.addressAuthEditText);
         forgotButton = findViewById(R.id.forgot_password);
     }
 
@@ -241,65 +219,25 @@ public class LogInActivity extends AppCompatActivity{
         }
     }
 
-    private void autoComplete(){
-        PlacesClient placesClient = Places.createClient(this);
-        // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
-        // and once again when the user makes a selection (for example when calling fetchPlace()).
-        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-        // Create a RectangularBounds object.
-        RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(-33.880490, 151.184363), //dummy lat/lng
-                new LatLng(-33.858754, 151.229596));
-        // Use the builder to create a FindAutocompletePredictionsRequest.
-        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                // Call either setLocationBias() OR setLocationRestriction().
-                .setLocationBias(bounds)
-                //.setLocationRestriction(bounds)
-                .setCountry("IL")//
-                .setTypeFilter(TypeFilter.ADDRESS)
-                .setSessionToken(token)
-                .setQuery(mAddressField.getText().toString())
-                .build();
 
-
-        placesClient.findAutocompletePredictions(request).addOnSuccessListener(response -> {
-            mResult = new StringBuilder();
-            options = new ArrayList();
-            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                mResult.append(" ").append(prediction.getFullText(null) + "\n");
-                options.add(prediction.getFullText(null).toString());
-            }
-
-            ArrayAdapter<String> adapter =
-                    new ArrayAdapter<>(LogInActivity.this, android.R.layout.simple_list_item_1, options);
-
-            mAddressField.setAdapter(adapter);
-        }).addOnFailureListener((exception) -> {
-            if (exception instanceof ApiException) {
-                ApiException apiException = (ApiException) exception;
-                Log.e(TAG, "Place not found: " + apiException.getStatusCode());
-            }
-        });
-    }
 
     private void startSignUp(){
 
         String name = mNewNameField.getText().toString();
         String email = mNewEmailField.getText().toString();
         String password = mNewPasswordField.getText().toString();
-        String address = mAddressField.getText().toString();
 
         mProgress.setMessage("Signing Up...");
         mProgress.show();
 
-        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(address)){
+        if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     String userId= mAuth.getCurrentUser().getUid();
                     DatabaseReference current_userDB =  mDatabase.child(userId);
                     current_userDB.child("name").setValue(name);
-                    current_userDB.child("address").setValue(address);
-                    current_userDB.child("apartmentId").setValue("0");
+                    current_userDB.child("email").setValue(email);
+                    current_userDB.child("apartmentID").setValue(0);
                     mProgress.dismiss();
                     Intent mainIntent = new Intent(LogInActivity.this, MainActivity.class);
                     mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

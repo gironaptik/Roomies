@@ -30,10 +30,6 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Hashids hashids = new Hashids("this is my salt");
-        String hash = hashids.encode(12345678L);
-
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.drawerUsername);

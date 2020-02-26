@@ -4,6 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorLoginView"
     tools:context=".MenuActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/messagesButton"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:background="@drawable/button_drawable"
+            android:textColor="@color/colorAccent"
+            android:text="messages" />
+
+        <Button
+            android:id="@+id/shoppingButton"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:background="@drawable/button_drawable"
+            android:textColor="@color/colorAccent"
+            android:text="shopping list"/>
+
+        <Button
+            android:id="@+id/billsButton"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:background="@drawable/button_drawable"
+            android:textColor="@color/colorAccent"
+            android:text="bills"/>
+
+        <Button
+            android:id="@+id/assignmentsButton"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:background="@drawable/button_drawable"
+            android:textColor="@color/colorAccent"
+            android:text="assignments"/>
+
+        <Button
+            android:id="@+id/financialButton"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:background="@drawable/button_drawable"
+            android:textColor="@color/colorAccent"
+            android:text="financial"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

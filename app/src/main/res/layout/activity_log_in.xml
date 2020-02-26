@@ -168,17 +168,6 @@
                 android:inputType="text"
                 android:textSize="15sp" />
 
-            <AutoCompleteTextView
-                android:id="@+id/addressAuthEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:hint="@string/address"
-                android:textColor="@color/colorTextView"
-                android:textColorHint="@color/colorAccent"
-                android:maxLines="1"
-                android:inputType="text"
-                android:textSize="15sp" />
 
             <FrameLayout
                 android:layout_width="match_parent"
