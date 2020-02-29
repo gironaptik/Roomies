@@ -20,8 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
@@ -30,14 +35,21 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.hashids.Hashids;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +61,7 @@ public class NewRoomFragment extends Fragment {
     private EditText mApartmentNameView;
     private EditText mApartmentNumberView;
     private Button applyButton;
+    private String mApartmentImage = "https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/2395.jpg?alt=media&token=a30a1544-a933-41f9-8098-b58dbf371613";
     private String mApartmentName;
     private String mAddress;
     private String mApartmentNumber;
@@ -57,10 +70,17 @@ public class NewRoomFragment extends Fragment {
     private List<String> options;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    private FirebaseUser mAuthUser;
     private String counter = "Counter";
     private String apartments = "Apartments";
+    private String apartmentID = "apartmentID";
+    private String imageUrl = "imageUrl";
     private String saltValue;
+    private String hash;
+    private ImageSlider imageSlider;
+    private List<SlideModel> slideModels;
     private long idCounter;
+    private int coverIndex;
 
 
     @Override
@@ -73,7 +93,18 @@ public class NewRoomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new_room, container, false);
+        slideModels = new ArrayList<>();
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F1.jpg?alt=media&token=51b16512-ff5e-49d2-acd5-8286e0c45716"));
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F2.jpg?alt=media&token=06d5c9cd-a9ae-4023-bb3f-bce2f5c725b7"));
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F3.jpg?alt=media&token=de7fce9a-1a02-409b-b142-0e2255097e7c"));
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F4.jpg?alt=media&token=ddcbaf4d-7256-46d2-b347-61ce00707c75"));
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F5.jpg?alt=media&token=3420fc2e-ebef-4629-a122-a10408772688"));
+        imageSlider = rootView.findViewById(R.id.image_slider);
+        imageSlider.setImageList(slideModels, true);
+        imageSlider.stopSliding();
+        imageSlider.setItemClickListener(i -> mApartmentImage = slideModels.get(i).getImageUrl());
         mAuth = FirebaseAuth.getInstance();
+        mAuthUser = mAuth.getCurrentUser();
         mAddressField = rootView.findViewById(R.id.apartmentAddress);
         mApartmentNameView = rootView.findViewById(R.id.apartmentName);
         mApartmentNumberView = rootView.findViewById(R.id.apartmentNumber);
@@ -92,11 +123,11 @@ public class NewRoomFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                autoComplete();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                autoComplete();
             }
         });
         applyButton.setOnClickListener(view -> createRoom());
@@ -149,14 +180,19 @@ public class NewRoomFragment extends Fragment {
                 mDatabase.child(counter).setValue(number+1);
                 idCounter = number+1;
                 Hashids hashids = new Hashids(saltValue);
-                String hash = hashids.encode(idCounter);
+                hash = hashids.encode(idCounter);
                 DatabaseReference newApartmentDB =  apartmentsDB.child(hash);
                 newApartmentDB.child("id").setValue(hash);
+                newApartmentDB.child("imageUrl").setValue(mApartmentImage);
                 newApartmentDB.child("name").setValue(mApartmentName);
                 newApartmentDB.child("address").setValue(mAddress+ " " + mApartmentNumber);
+                newApartmentDB.child("users").child(mAuthUser.getDisplayName()).setValue(mAuthUser.getPhotoUrl().toString());
                 mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).child("apartmentID").setValue(hash);
                 Toast.makeText(getContext(), "Your Apartment code is: " + hash, Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getContext(), MenuActivity.class));
+                Intent menuIntent = new Intent(getContext(), MenuActivity.class);
+                menuIntent.putExtra(apartmentID, hash);
+                menuIntent.putExtra(imageUrl, mApartmentImage);
+                startActivity(menuIntent);
 
             }
 
@@ -167,6 +203,7 @@ public class NewRoomFragment extends Fragment {
         });
 
     }
+
 
 
 

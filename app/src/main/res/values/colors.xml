@@ -10,6 +10,7 @@
     <color name="colorLoginView">#4a5766</color>
     <color name="colorButtonBackground">#30de51</color>
     <color name="colorButtonAccent">#000000</color>
+    <color name="sliderColor">#FFFFFF</color>
 
 
 </resources>

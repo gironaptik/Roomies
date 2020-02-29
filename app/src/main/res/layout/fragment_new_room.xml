@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
     tools:context=".NewRoomFragment">
 
@@ -42,7 +43,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="50dp"
+            android:layout_margin="30dp"
             android:layout_below="@+id/upperLayout"
             android:orientation="vertical">
 
@@ -50,19 +51,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/proximaregular"
+                android:text="Select Cover Image"
+                android:textSize="25dp" />
+
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/image_slider"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="134dp"
+                app:selected_dot="@drawable/default_selected_dot"
+                app:placeholder="@color/sliderColor"
+                app:auto_cycle="true"
+                app:corner_radius="20"
+                app:delay="0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximaregular"
                 android:text="Name Your House"
+                android:layout_marginTop="20dp"
                 android:textSize="25dp" />
 
             <EditText
                 android:id="@+id/apartmentName"
-                android:layout_width="281dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/proximaregular"
                 android:text="Address Your House"
                 android:textSize="25dp" />
@@ -80,14 +100,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/proximaregular"
                 android:text="Apartment Number"
                 android:textSize="25dp" />
 
             <EditText
                 android:id="@+id/apartmentNumber"
-                android:layout_width="281dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Number" />
 

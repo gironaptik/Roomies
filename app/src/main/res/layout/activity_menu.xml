@@ -1,56 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLoginView"
+    android:background="#fcfcfc"
     tools:context=".MenuActivity">
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/collapseToolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        app:layout_scrollFlags="exitUntilCollapsed|scroll"
+        app:contentScrim="@color/colorBackground"
+        app:title="App Title"
+        app:expandedTitleMarginStart="48dp"
+        app:expandedTitleMarginEnd="64dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarId"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_collapseMode="pin"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/messagesButton"
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent"
-            android:text="messages" />
-
-        <Button
-            android:id="@+id/shoppingButton"
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent"
-            android:text="shopping list"/>
-
-        <Button
-            android:id="@+id/billsButton"
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent"
-            android:text="bills"/>
-
-        <Button
-            android:id="@+id/assignmentsButton"
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent"
-            android:text="assignments"/>
-
-        <Button
-            android:id="@+id/financialButton"
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:background="@drawable/button_drawable"
-            android:textColor="@color/colorAccent"
-            android:text="financial"/>
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

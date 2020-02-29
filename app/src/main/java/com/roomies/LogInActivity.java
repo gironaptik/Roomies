@@ -7,6 +7,7 @@ import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -44,6 +45,9 @@ import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -234,6 +238,12 @@ public class LogInActivity extends AppCompatActivity{
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     String userId= mAuth.getCurrentUser().getUid();
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(name)
+                            .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/2415.jpg?alt=media&token=04892b10-d93e-4fd5-89d1-8a656e533b2e"))
+                            .build();
+                    user.updateProfile(profileUpdates);
                     DatabaseReference current_userDB =  mDatabase.child(userId);
                     current_userDB.child("name").setValue(name);
                     current_userDB.child("email").setValue(email);
