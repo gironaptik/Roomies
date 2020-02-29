@@ -1,15 +1,21 @@
 package com.roomies;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.animation.Animator;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -32,6 +38,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
@@ -50,17 +58,27 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class LogInActivity extends AppCompatActivity{
+public class LogInActivity extends AppCompatActivity implements IPickResult {
 
 
     private static final String TAG = LogInActivity.class.getSimpleName();
+    private int TAKE_IMAGE_CODE = 10001;
     private String apiKey;
     private ImageView bookIconImageView;
     private TextView bookITextView;
@@ -87,6 +105,8 @@ public class LogInActivity extends AppCompatActivity{
     private String sign_up;
     private ProgressDialog mProgress;
     private TextView forgotButton;
+    private ImageView userAvatar;
+    private Bitmap bitmap;
 
 
     @Override
@@ -115,7 +135,7 @@ public class LogInActivity extends AppCompatActivity{
         timerHandler.postDelayed(timerRunnable, 3000);
         mAuthListener = firebaseAuth -> {
             if(firebaseAuth.getCurrentUser() != null){
-                startActivity(new Intent(LogInActivity.this, MenuActivity.class));
+                startActivity(new Intent(LogInActivity.this, ApartmentActivity.class));
             }
         };
 
@@ -144,6 +164,20 @@ public class LogInActivity extends AppCompatActivity{
             mLoginBtn.setText("Join Us!");
             mLoginBtn.setTag(sign_up);
         });
+
+        int[] images = {R.drawable.avatar1,R.drawable.avatar2};
+        Random rand = new Random();
+        int i = rand.nextInt(images.length);
+        userAvatar.setImageResource(images[i]);
+        bitmap = BitmapFactory.decodeResource(getResources(),
+                images[i]);
+        userAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                takePictureIntent();
+                PickImageDialog.build(new PickSetup()).show(LogInActivity.this);
+            }
+        });
     }
 
     @Override
@@ -169,6 +203,7 @@ public class LogInActivity extends AppCompatActivity{
         mNewEmailField = findViewById(R.id.newEmailEditText);
         mNewPasswordField = findViewById(R.id.newPasswordEditText);
         forgotButton = findViewById(R.id.forgot_password);
+        userAvatar = findViewById(R.id.userAvatar);
     }
 
     private void startAnimation() {
@@ -237,6 +272,7 @@ public class LogInActivity extends AppCompatActivity{
         if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
+                    handleUpload(bitmap);
                     String userId= mAuth.getCurrentUser().getUid();
                     FirebaseUser user = mAuth.getCurrentUser();
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -249,7 +285,7 @@ public class LogInActivity extends AppCompatActivity{
                     current_userDB.child("email").setValue(email);
                     current_userDB.child("apartmentID").setValue(0);
                     mProgress.dismiss();
-                    Intent mainIntent = new Intent(LogInActivity.this, MainActivity.class);
+                    Intent mainIntent = new Intent(LogInActivity.this, ApartmentActivity.class);
                     mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(mainIntent);
                 }
@@ -284,4 +320,65 @@ public class LogInActivity extends AppCompatActivity{
                 });
     }
 
+    private void takePictureIntent(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent, TAKE_IMAGE_CODE);
+        }
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode == TAKE_IMAGE_CODE){
+//            switch(resultCode){
+//                case Activity.RESULT_OK:
+//                    bitmap = (Bitmap)data.getExtras().get("data");
+//                    userAvatar.setImageBitmap(bitmap);
+////                    handleUpload(bitmap);
+//            }
+//        }
+//    }
+
+    private void handleUpload(Bitmap bitmap){
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        StorageReference reference = FirebaseStorage.getInstance().getReference()
+                .child("profileImages")
+                .child(mAuth.getCurrentUser().getUid()+".jpeg");
+        reference.putBytes(baos.toByteArray()).addOnSuccessListener(taskSnapshot ->
+                getDownloadUrl(reference)).addOnFailureListener(e -> Log.e(TAG, "OnFailure: ", e.getCause()));
+    }
+
+    private void getDownloadUrl(StorageReference reference){
+        reference.getDownloadUrl().addOnSuccessListener(uri -> {
+            Log.d(TAG, "onSuccess: " + uri);
+            setUserProfileUri(uri);
+        });
+    }
+
+    private void setUserProfileUri(Uri uri){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setPhotoUri(uri).build();
+        user.updateProfile(request).addOnSuccessListener(aVoid -> Toast.makeText(LogInActivity.this, "Updated", Toast.LENGTH_SHORT))
+                .addOnFailureListener(e -> Toast.makeText(LogInActivity.this, "Profile image failed..", Toast.LENGTH_SHORT));
+    }
+
+
+    @Override
+    public void onPickResult(PickResult r) {
+        if (r.getError() == null) {
+            bitmap = r.getBitmap();
+            userAvatar.setImageBitmap(bitmap);
+//            handleUpload(bitmap);
+//            getImageView().setImageBitmap(r.getBitmap());
+
+            //r.getPath();
+        } else {
+            //Handle possible errors
+            //TODO: do what you have to do with r.getError();
+            Toast.makeText(this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
 }
