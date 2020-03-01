@@ -146,7 +146,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String apartmentid = dataSnapshot.getValue(String.class);
-                        if(apartmentid.equals("0")){
+                        if(apartmentid.equals("0") || apartmentid == null){
                             startActivity(new Intent(LogInActivity.this, ApartmentActivity.class));
                         }
                         else{
@@ -154,7 +154,6 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                             newIntent.putExtra(apartmentID, apartmentid);
                             startActivity(newIntent);
                         }
-
                     }
 
                     @Override
@@ -303,13 +302,15 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                     FirebaseUser user = mAuth.getCurrentUser();
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(name)
-                            .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/2415.jpg?alt=media&token=04892b10-d93e-4fd5-89d1-8a656e533b2e"))
+//                            .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/2415.jpg?alt=media&token=04892b10-d93e-4fd5-89d1-8a656e533b2e"))
                             .build();
                     user.updateProfile(profileUpdates);
                     DatabaseReference current_userDB =  mDatabase.child(userId);
                     current_userDB.child("name").setValue(name);
                     current_userDB.child("email").setValue(email);
                     current_userDB.child("apartmentID").setValue("0");
+//                    current_userDB.child("image").setValue(mAuth.getCurrentUser().getPhotoUrl());
+                    current_userDB.child("id").setValue(user.getUid());
                     mProgress.dismiss();
                     Intent mainIntent = new Intent(LogInActivity.this, ApartmentActivity.class);
                     mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -387,8 +388,12 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
     private void setUserProfileUri(Uri uri){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setPhotoUri(uri).build();
-        user.updateProfile(request).addOnSuccessListener(aVoid -> Toast.makeText(LogInActivity.this, "Updated", Toast.LENGTH_SHORT))
-                .addOnFailureListener(e -> Toast.makeText(LogInActivity.this, "Profile image failed..", Toast.LENGTH_SHORT));
+        user.updateProfile(request).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                mDatabase.child(mAuth.getCurrentUser().getUid()).child("image").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+                Toast.makeText(LogInActivity.this, "Updated", Toast.LENGTH_SHORT);
+            }}).addOnFailureListener(e -> Toast.makeText(LogInActivity.this, "Profile image failed..", Toast.LENGTH_SHORT));
     }
 
 

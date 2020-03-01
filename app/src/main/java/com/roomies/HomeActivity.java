@@ -7,11 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
@@ -32,6 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -48,8 +47,13 @@ public class HomeActivity extends AppCompatActivity {
     private String code;
     private String apartmentID = "apartmentID";
     private String imageUrl = "imageUrl";
-    private DatabaseReference mDatabase;
+    private DatabaseReference mApartmentDatabase;
+    private DatabaseReference mUserDatabase;
     private BottomNavigationView bottomNavigationView;
+    private List<String> usersKeyList;
+    private List<User> userList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +64,71 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
         setBottomNavigator();
-        CircularImageView circularImageView = findViewById(R.id.my_avatar);
-        Glide.with(getApplicationContext())
-                .load(mAuth.getCurrentUser().getPhotoUrl())
-                .into(circularImageView);
+        usersKeyList = new ArrayList<>();
+        userList = new ArrayList<>();
+
+//        CircularImageView circularImageView = findViewById(R.id.my_avatar);
+//        Glide.with(getApplicationContext())
+//                .load(mAuth.getCurrentUser().getPhotoUrl())
+//                .into(circularImageView);
         avatarsLayout = findViewById(R.id.avatars_layout);
-        setUsersAvatar();
+
+//        setUsersAvatar(mAuth.getCurrentUser().getPhotoUrl().toString());
+
         collapsingToolbarLayout = findViewById(R.id.collapseToolbar);
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
             image = menuIntent.getExtras().getString(imageUrl);
         }
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code);
+        mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code);
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        createUserList();
         appBarLayout = findViewById(R.id.appbar);
         setName();
         setBackgroud();
     }
+
+    private void createUserList() {
+        mApartmentDatabase.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersKeyList.clear();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String key = snapshot.getKey();
+                            usersKeyList.add(key);
+                            usersKeyList.size();
+                    }
+                    userList();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void userList() {
+        userList.clear();
+        for(String key : usersKeyList) {
+            mUserDatabase.child(key).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    userList.add(user);
+                    setUsersAvatar(user.getImage());
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+            }
 
     private void setBottomNavigator(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -109,7 +161,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setBackgroud(){
-        mDatabase.child("imageUrl").addValueEventListener(new ValueEventListener() {
+        mApartmentDatabase.child("imageUrl").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String url = dataSnapshot.getValue(String.class);
@@ -137,11 +189,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setName(){
-//        Resources r = getResources();
-//        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, r.getDisplayMetrics());
-//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, appBarLayout.getHeight() - (int)px/2);
-//        avatarsLayout.setLayoutParams(params);
-        mDatabase.child("name").addValueEventListener(new ValueEventListener() {
+        mApartmentDatabase.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 collapsingToolbarLayout.setTitle(dataSnapshot.getValue().toString());
@@ -154,7 +202,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void setUsersAvatar(){
+    private void setUsersAvatar(String image){
         Resources r = getResources();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, r.getDisplayMetrics());
         float margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, r.getDisplayMetrics());
@@ -168,7 +216,7 @@ public class HomeActivity extends AppCompatActivity {
         circle.setShadowColor(Color.parseColor("#3f51b5"));
         circle.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         Glide.with(getApplicationContext())
-                .load(mAuth.getCurrentUser().getPhotoUrl())
+                .load(image)
                 .into(circle);
         avatarsLayout.addView(circle);
     }
