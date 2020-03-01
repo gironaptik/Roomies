@@ -1,12 +1,19 @@
 package com.roomies;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -14,18 +21,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class HomeActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private LinearLayout avatarsLayout;
+    private FirebaseAuth mAuth;
     private Intent menuIntent;
+    private AppBarLayout appBarLayout;
     private Button mMessagesBtn;
     private Button mShoppingBtn;
     private Button mBillsBtn;
@@ -37,15 +50,22 @@ public class HomeActivity extends AppCompatActivity {
     private String imageUrl = "imageUrl";
     private DatabaseReference mDatabase;
     private BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
+        mAuth = FirebaseAuth.getInstance();
         setBottomNavigator();
-
+        CircularImageView circularImageView = findViewById(R.id.my_avatar);
+        Glide.with(getApplicationContext())
+                .load(mAuth.getCurrentUser().getPhotoUrl())
+                .into(circularImageView);
+        avatarsLayout = findViewById(R.id.avatars_layout);
+        setUsersAvatar();
         collapsingToolbarLayout = findViewById(R.id.collapseToolbar);
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
@@ -53,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
             image = menuIntent.getExtras().getString(imageUrl);
         }
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code);
+        appBarLayout = findViewById(R.id.appbar);
         setName();
         setBackgroud();
     }
@@ -105,6 +126,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setName(){
+//        Resources r = getResources();
+//        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, r.getDisplayMetrics());
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, appBarLayout.getHeight() - (int)px/2);
+//        avatarsLayout.setLayoutParams(params);
         mDatabase.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -116,5 +141,24 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setUsersAvatar(){
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, r.getDisplayMetrics());
+        float margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, r.getDisplayMetrics());
+        float borderWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)px, (int)px);
+        lp.setMargins((int)margin, 0,0,0);
+        CircularImageView circle = new CircularImageView(getApplicationContext());
+        circle.setLayoutParams(lp);
+        circle.setBorderColor(Color.parseColor("#3f51b5"));
+        circle.setBorderWidth(borderWidth);
+        circle.setShadowColor(Color.parseColor("#3f51b5"));
+        circle.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        Glide.with(getApplicationContext())
+                .load(mAuth.getCurrentUser().getPhotoUrl())
+                .into(circle);
+        avatarsLayout.addView(circle);
     }
 }

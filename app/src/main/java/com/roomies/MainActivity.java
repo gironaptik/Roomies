@@ -1,5 +1,6 @@
 package com.roomies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,6 +13,11 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.hashids.Hashids;
 
@@ -19,9 +25,14 @@ public class MainActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
     private Button b;
     private Button logout;
     private DrawerLayout drawer;
+    private String image;
+    private String code;
+    private String apartmentID = "apartmentID";
+    private String imageUrl = "imageUrl";
     private TextView drawerUsername;
     private NavigationView navigationView;
 
@@ -33,7 +44,6 @@ public class MainActivity extends AppCompatActivity{
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.drawerUsername);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         logout = findViewById(R.id.logout);
@@ -57,6 +67,9 @@ public class MainActivity extends AppCompatActivity{
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(loginIntent);
             }
+            else{
+                mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+            }
         };
         b = findViewById(R.id.next);
         logout.setOnClickListener(view -> mAuth.signOut());
@@ -74,7 +87,27 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void clickToaApartment(View view) {
-        Intent activityChangeIntent = new Intent(MainActivity.this, ApartmentActivity.class);
-        this.startActivity(activityChangeIntent);
+        mDatabase.child("apartmentID").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue(String.class);
+                if(value.equals("0")){
+                    Intent activityChangeIntent = new Intent(MainActivity.this, ApartmentActivity.class);
+                    startActivity(activityChangeIntent);
+                }
+                else{
+                    Intent activityChangeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                    activityChangeIntent.putExtra(apartmentID, value);
+                    activityChangeIntent.putExtra(imageUrl, mAuth.getCurrentUser().getPhotoUrl());
+                    startActivity(activityChangeIntent);
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

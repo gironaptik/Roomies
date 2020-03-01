@@ -167,7 +167,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
 
         int[] images = {R.drawable.avatar1,R.drawable.avatar2};
         Random rand = new Random();
-        int i = rand.nextInt(images.length);
+        int i = (int)(Math.random() * images.length);
         userAvatar.setImageResource(images[i]);
         bitmap = BitmapFactory.decodeResource(getResources(),
                 images[i]);
