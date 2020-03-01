@@ -27,6 +27,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
@@ -62,9 +64,8 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private String code;
     private String apartmentID = "apartmentID";
     private String imageUrl = "imageUrl";
-    private ImageView userAvatar;
     private EditText editName;
-//    private EditText editEmail;
+    private CircularImageView circularImageView;
     private EditText editCurrentPassword;
     private EditText editNewPassword;
     private Button saveChanges;
@@ -108,29 +109,20 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                     }
                 });
 
-        userAvatar.setOnClickListener(view -> {
+        circularImageView.setOnClickListener(view -> {
             PickImageDialog.build(new PickSetup()).show(ProfileActivity.this);
         });
 
 
         saveChanges.setOnClickListener(view -> handleUpload(bitmap));
         leaveApartment.setOnClickListener(view -> leaveApartment());
-        logout.setOnClickListener(view -> logout());
+        logout.setOnClickListener(view ->signOut());
     }
     private void findAllById(){
-//        Log.v("URL", mAuth.getCurrentUser().getPhotoUrl());
-        userAvatar = findViewById(R.id.edituserAvatar);
-//        Glide.with(getApplicationContext())
-//                .load(mAuth.getCurrentUser().getPhotoUrl())
-//                .into(userAvatar);
-
-        Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(userAvatar);
-
-//        userAvatar.setImageURI(mAuth.getCurrentUser().getPhotoUrl());
         editName = findViewById(R.id.editNameEditText);
         editName.setText(mAuth.getCurrentUser().getDisplayName());
-//        editEmail = findViewById(R.id.editEmailEditText);
-//        editEmail.setText(mAuth.getCurrentUser().getEmail());
+        circularImageView = findViewById(R.id.my_avatar);
+        Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(circularImageView);
         editCurrentPassword = findViewById(R.id.edit_CurrentPasswordEditText);
         editCurrentPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -156,7 +148,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         leaveApartment = findViewById(R.id.edit_leaveApartment);
         logout = findViewById(R.id.edit_logout);
         bitmap = BitmapFactory.decodeResource(getResources(),
-                userAvatar.getImageAlpha());
+                circularImageView.getImageAlpha());
     }
     private void setBottomNavigator(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -225,7 +217,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     public void onPickResult(PickResult r) {
         if (r.getError() == null) {
             bitmap = r.getBitmap();
-            userAvatar.setImageBitmap(bitmap);
+            circularImageView.setImageBitmap(bitmap);
 //            handleUpload(bitmap);
 //            getImageView().setImageBitmap(r.getBitmap());
 
@@ -271,14 +263,12 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         }
     }
 
+    private void signOut(){
+            FirebaseAuth.getInstance().signOut();
+            Intent i=new Intent(getApplicationContext(),LogInActivity.class);
+            startActivity(i);
 
-    private void logout(){
-        logout.setOnClickListener(view -> mAuth.signOut());
-//        Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(intent);
     }
-
     private void leaveApartment(){
         userDatabase.child("apartmentID").setValue("0");
         Intent intent = new Intent(getApplicationContext(), ApartmentActivity.class);

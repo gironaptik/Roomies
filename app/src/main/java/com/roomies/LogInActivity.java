@@ -142,7 +142,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
         timerHandler.postDelayed(timerRunnable, 3000);
         mAuthListener = firebaseAuth -> {   /// HERE TO CHECK IF USER HAS APARTMENT ALREADY!!
             if(firebaseAuth.getCurrentUser() != null){
-                mDatabase.child(mAuth.getCurrentUser().getUid()).child("ApartmentID").addValueEventListener(new ValueEventListener() {
+                mDatabase.child(mAuth.getCurrentUser().getUid()).child("apartmentID").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String apartmentid = dataSnapshot.getValue(String.class);
@@ -192,7 +192,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
             mLoginBtn.setTag(sign_up);
         });
 
-        int[] images = {R.drawable.avatar1,R.drawable.avatar2};
+        int[] images = {R.drawable.avatar1,R.drawable.avatar2, R.drawable.avatar3, R.drawable.avatar4, R.drawable.avatar5, R.drawable.avatar6, R.drawable.avatar7, R.drawable.avatar8, R.drawable.avatar9};
         Random rand = new Random();
         int i = (int)(Math.random() * images.length);
         userAvatar.setImageResource(images[i]);
