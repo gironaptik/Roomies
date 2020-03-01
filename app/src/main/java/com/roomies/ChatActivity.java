@@ -31,15 +31,14 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_chat);
         setBottomNavigator();
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
-            image = menuIntent.getExtras().getString(imageUrl);
         }
     }
 
@@ -55,7 +54,6 @@ public class ChatActivity extends AppCompatActivity {
                 case R.id.profile:
                     Intent newIntent = new Intent(getApplicationContext(),ProfileActivity.class);
                     newIntent.putExtra(apartmentID, code);
-                    newIntent.putExtra(imageUrl, image);
                     startActivity(newIntent);
                     overridePendingTransition(0,0);
                     return true;
@@ -64,7 +62,6 @@ public class ChatActivity extends AppCompatActivity {
                 case R.id.home:
                     Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
                     newIntent.putExtra(apartmentID, code);
-                    newIntent.putExtra(imageUrl, image);
                     startActivity(newIntent);
                     overridePendingTransition(0,0);
                     return true;

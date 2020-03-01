@@ -109,20 +109,31 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setBackgroud(){
-        Glide.with(this)
-                .load(image)
-                .into(new CustomTarget<Drawable>() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        collapsingToolbarLayout.setBackground(resource);
-                    }
+        mDatabase.child("imageUrl").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String url = dataSnapshot.getValue(String.class);
+                Glide.with(getApplicationContext())
+                        .load(url)
+                        .into(new CustomTarget<Drawable>() {
+                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                            @Override
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                collapsingToolbarLayout.setBackground(resource);
+                            }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                    }
-                });
+                            }
+                        });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setName(){

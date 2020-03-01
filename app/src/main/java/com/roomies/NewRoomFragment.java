@@ -1,13 +1,9 @@
 package com.roomies;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,14 +15,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
@@ -41,15 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
 import org.hashids.Hashids;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,12 +170,11 @@ public class NewRoomFragment extends Fragment {
                 newApartmentDB.child("imageUrl").setValue(mApartmentImage);
                 newApartmentDB.child("name").setValue(mApartmentName);
                 newApartmentDB.child("address").setValue(mAddress+ " " + mApartmentNumber);
-                newApartmentDB.child("users").child(mAuthUser.getDisplayName()).setValue(mAuthUser.getPhotoUrl().toString());
+                newApartmentDB.child("users").child(mAuthUser.getUid()).setValue(mAuthUser.getPhotoUrl().toString());
                 mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).child("apartmentID").setValue(hash);
                 Toast.makeText(getContext(), "Your Apartment code is: " + hash, Toast.LENGTH_LONG).show();
                 Intent menuIntent = new Intent(getContext(), HomeActivity.class);
                 menuIntent.putExtra(apartmentID, hash);
-                menuIntent.putExtra(imageUrl, mApartmentImage);
                 startActivity(menuIntent);
 
             }

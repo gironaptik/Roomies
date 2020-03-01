@@ -5,15 +5,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorLoginView"
     tools:context=".ProfileActivity">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="40dp">
+
+    <ImageView
+        android:id="@+id/edituserAvatar"
+        android:layout_width="70dp"
+        android:layout_height="90dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"/>
+        android:fontFamily="@font/proximabold"
+        android:text="Set your Avatar"
+        android:textColor="@color/colorTextView"
+        android:layout_marginBottom="40dp"/>
+
+    <EditText
+        android:id="@+id/editNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name"
+        android:textColor="@color/colorTextView"
+        android:textColorHint="@color/colorAccent"
+        android:maxLines="1"
+        android:inputType="text"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edit_CurrentPasswordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/currentpassword"
+        android:textColor="@color/colorTextView"
+        android:textColorHint="@color/colorAccent"
+        android:maxLines="1"
+        android:inputType="text"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/edit_NewPasswordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/newpassword"
+        android:textColor="@color/colorTextView"
+        android:textColorHint="@color/colorAccent"
+        android:maxLines="1"
+        android:inputType="text"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/edit_saveChanges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Save Changes"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/edit_leaveApartment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leave Apartment"/>
+
+        <Button
+            android:id="@+id/edit_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:text="Log-out"/>
+    </LinearLayout>
+</LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

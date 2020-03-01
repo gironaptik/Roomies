@@ -65,8 +65,8 @@ public class MenuActivity extends AppCompatActivity {
         menuIntent = getIntent();
         if(apartmentID != null) {
             code = menuIntent.getExtras().getString(apartmentID);
-            image = menuIntent.getExtras().getString(imageUrl);
         }
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code);
         setName();
         setBackgroud();

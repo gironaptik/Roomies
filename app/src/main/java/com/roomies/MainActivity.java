@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity{
                 else{
                     Intent activityChangeIntent = new Intent(MainActivity.this, HomeActivity.class);
                     activityChangeIntent.putExtra(apartmentID, value);
-                    activityChangeIntent.putExtra(imageUrl, mAuth.getCurrentUser().getPhotoUrl());
                     startActivity(activityChangeIntent);
                 }
 

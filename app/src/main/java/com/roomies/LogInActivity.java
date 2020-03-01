@@ -56,8 +56,11 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -107,6 +110,10 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
     private TextView forgotButton;
     private ImageView userAvatar;
     private Bitmap bitmap;
+    private String image;
+    private String code;
+    private String apartmentID = "apartmentID";
+    private String imageUrl = "imageUrl";
 
 
     @Override
@@ -133,9 +140,29 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
             timerHandler.postDelayed(timerRunnable, 3000);
         };
         timerHandler.postDelayed(timerRunnable, 3000);
-        mAuthListener = firebaseAuth -> {
+        mAuthListener = firebaseAuth -> {   /// HERE TO CHECK IF USER HAS APARTMENT ALREADY!!
             if(firebaseAuth.getCurrentUser() != null){
-                startActivity(new Intent(LogInActivity.this, ApartmentActivity.class));
+                mDatabase.child(mAuth.getCurrentUser().getUid()).child("ApartmentID").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String apartmentid = dataSnapshot.getValue(String.class);
+                        if(apartmentid.equals("0")){
+                            startActivity(new Intent(LogInActivity.this, ApartmentActivity.class));
+                        }
+                        else{
+                            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
+                            newIntent.putExtra(apartmentID, apartmentid);
+                            startActivity(newIntent);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         };
 
@@ -246,7 +273,6 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
             Toast.makeText(LogInActivity.this, "Fields are empty.", Toast.LENGTH_LONG).show();
         }
         else{
-
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -283,7 +309,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                     DatabaseReference current_userDB =  mDatabase.child(userId);
                     current_userDB.child("name").setValue(name);
                     current_userDB.child("email").setValue(email);
-                    current_userDB.child("apartmentID").setValue(0);
+                    current_userDB.child("apartmentID").setValue("0");
                     mProgress.dismiss();
                     Intent mainIntent = new Intent(LogInActivity.this, ApartmentActivity.class);
                     mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
