@@ -14,20 +14,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -37,11 +30,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Picasso;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -57,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
     private DatabaseReference userDatabase;
-    private DatabaseReference apartment;
+    private DatabaseReference apartmentDatabase;
     private Intent menuIntent;
     private BottomNavigationView bottomNavigationView;
     private String image;
@@ -86,15 +76,13 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         userDatabase = mDatabase.child("Users").child(mAuth.getCurrentUser().getUid());
-        apartment = mDatabase.child("Apartments").child(mAuth.getCurrentUser().getUid());
         mProgress = new ProgressDialog(this);
-
         findAllById();
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
-
+        apartmentDatabase = mDatabase.child("Apartments").child(code);
         Glide.with(this)
                 .asBitmap()
                 .load(mAuth.getCurrentUser().getPhotoUrl())
@@ -232,6 +220,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private void updateUser(){
 //        handleUpload(bitmap);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        userDatabase.child("image").setValue(newImageUri.toString());
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(editName.getText().toString())
                 .setPhotoUri(newImageUri)
@@ -243,7 +232,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                         Log.d(TAG, "User profile updated.");
                     }
                 });
-
         if(!editCurrentPassword.getText().toString().equals(null) && !editNewPassword.getText().toString().equals(null) && credential != null){
             user.reauthenticate(credential)
                     .addOnCompleteListener(task -> {
@@ -274,7 +262,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         Intent intent = new Intent(getApplicationContext(), ApartmentActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        /// Need to add also removing from apartment db
+        apartmentDatabase.child("users").child(mAuth.getCurrentUser().getUid()).removeValue();
     }
 
 }

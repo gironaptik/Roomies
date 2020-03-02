@@ -45,6 +45,7 @@ public class IntroFragment extends Fragment {
     private FirebaseAuth mAuth;
     private Button newRoomB;
     private Button joinRoom;
+    private TextView logout;
     private EditText joinRoomCode;
     private TextView joinRoomB;
     private CommunicationInterface callback;
@@ -66,8 +67,10 @@ public class IntroFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments");
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        logout = rootView.findViewById(R.id.logoutButton);
         joinRoomB = rootView.findViewById(R.id.joinRoomButton);
         newRoomB = rootView.findViewById(R.id.newRoomButton);
+        logout.setOnClickListener(view -> signOut());
         newRoomB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,6 +138,14 @@ public class IntroFragment extends Fragment {
         });
 //        sensorSwitch = popupView.findViewById(R.id.sensorSwitch);
 ////        sensorSwitchChanged();
+
+    }
+
+    private void signOut(){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent=new Intent(getContext(),LogInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
 
     }
 
