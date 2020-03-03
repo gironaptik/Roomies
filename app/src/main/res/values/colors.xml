@@ -11,6 +11,8 @@
     <color name="colorButtonBackground">#30de51</color>
     <color name="colorButtonAccent">#000000</color>
     <color name="sliderColor">#FFFFFF</color>
+    <color name="glide_slider_background_color">#B9BBBD</color>
+
 
 
 </resources>

@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -95,10 +96,10 @@ public class IntroFragment extends Fragment {
 
     public void onButtonShowPopupWindowClick(View view) {
 
-        // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)getActivity().
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.join_room, introFrame, false);
+        popupView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.popupanim));
         int width = (int) (ViewGroup.LayoutParams.WRAP_CONTENT);
         int height = (int) (ViewGroup.LayoutParams.WRAP_CONTENT);
         boolean focusable = true; // lets taps outside the popup also dismiss it
