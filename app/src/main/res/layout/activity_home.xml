@@ -83,7 +83,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
             <Button
-                android:id="@+id/btn_shopping"
+                android:id="@+id/shopping_screen"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@drawable/shopping"/>
@@ -122,7 +122,7 @@
                 android:layout_alignParentRight="true"
                 android:orientation="vertical">
                 <Button
-                    android:id="@+id/shopping_screen"
+                    android:id="@+id/finance"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/finance"/>
