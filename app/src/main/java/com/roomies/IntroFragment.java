@@ -100,8 +100,8 @@ public class IntroFragment extends Fragment {
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.join_room, introFrame, false);
         popupView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.popupanim));
-        int width = (int) (ViewGroup.LayoutParams.WRAP_CONTENT);
-        int height = (int) (ViewGroup.LayoutParams.WRAP_CONTENT);
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);

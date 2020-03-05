@@ -2,8 +2,8 @@ package com.roomies;
 
 public interface CommunicationInterface {
 
-    public void onSuccess();
+    void onSuccess();
 
-    public void onFailed();
+    void onFailed();
 
 }

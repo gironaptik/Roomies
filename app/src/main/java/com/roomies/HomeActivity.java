@@ -89,6 +89,17 @@ public class HomeActivity extends AppCompatActivity {
         setName();
         setBackgroud();
         mShoppingBtn = findViewById(R.id.shopping_screen);
+        mAssignmentsBtn = findViewById(R.id.btn_chores);
+        mAssignmentsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(getApplicationContext(),ChoresActivity.class);
+                newIntent.putExtra(apartmentID, code);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(newIntent);
+                overridePendingTransition(0,0);
+            }
+        });
         mShoppingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

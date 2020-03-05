@@ -13,10 +13,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +40,6 @@ public class ShoppinglistActivity extends AppCompatActivity {
     private Intent menuIntent;
     private String code;
     private String apartmentID = "apartmentID";
-    private String imageUrl = "imageUrl";
     private FloatingActionButton fab_btn;
     private RecyclerView recyclerView;
     private TextView amountText;
@@ -87,7 +84,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
                 for(DataSnapshot snap : dataSnapshot.getChildren()){
                     Data data = snap.getValue(Data.class);
                     totalAmount += data.getAmount();
-                    String tAmount = String.valueOf(totalAmount + ".00");
+                    String tAmount = totalAmount + ".00";
                     amountText.setText(tAmount);
 
                 }

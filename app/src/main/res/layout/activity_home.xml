@@ -82,10 +82,11 @@
                 android:layout_alignParentLeft="true"
                 android:gravity="center"
                 android:orientation="vertical">
-            <ImageView
+            <Button
+                android:id="@+id/btn_shopping"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/shopping"/>
+                android:background="@drawable/shopping"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -101,10 +102,11 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center"
                 android:orientation="vertical">
-                <ImageView
+                <Button
+                    android:id="@+id/btn_chores"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/chores"/>
+                    android:background="@drawable/chores"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
