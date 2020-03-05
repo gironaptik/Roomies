@@ -107,7 +107,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
     private void customeDialog(){
         AlertDialog.Builder myDialog = new AlertDialog.Builder(ShoppinglistActivity.this);
         LayoutInflater inflater = LayoutInflater.from(ShoppinglistActivity.this);
-        View myView = inflater.inflate(R.layout.input_data, null);
+        View myView = inflater.inflate(R.layout.input_shopping_data, null);
         AlertDialog dialog = myDialog.create();
         dialog.setView(myView);
 
