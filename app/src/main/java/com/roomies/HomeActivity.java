@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,6 +88,17 @@ public class HomeActivity extends AppCompatActivity {
         appBarLayout = findViewById(R.id.appbar);
         setName();
         setBackgroud();
+        mShoppingBtn = findViewById(R.id.shopping_screen);
+        mShoppingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(getApplicationContext(),ShoppinglistActivity.class);
+                newIntent.putExtra(apartmentID, code);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(newIntent);
+                overridePendingTransition(0,0);
+            }
+        });
     }
 
     private void createUserList() {
@@ -220,5 +232,13 @@ public class HomeActivity extends AppCompatActivity {
                 .load(image)
                 .into(circle);
         avatarsLayout.addView(circle);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }
