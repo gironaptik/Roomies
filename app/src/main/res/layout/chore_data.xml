@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="6dp"
+    android:elevation="6dp"
+    android:layout_margin="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/chore_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="16 Sep, 2020"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:fontFamily="@font/proximathin"
+                android:padding="5dp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/chore_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:maxLines="1"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:fontFamily="@font/proximaregular"/>
+
+            <TextView
+                android:id="@+id/chore_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Note"
+                android:maxLines="1"
+                android:layout_below="@id/chore_name"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:fontFamily="@font/proximaregular"/>
+
+            <TextView
+                android:id="@+id/chore_owner_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="By: "
+                android:maxLines="1"
+                android:layout_below="@id/chore_note"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:fontFamily="@font/proximaregular"/>
+            <TextView
+                android:id="@+id/chore_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Who"
+                android:maxLines="1"
+                android:layout_below="@id/chore_note"
+                android:layout_toRightOf="@id/chore_owner_name"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:fontFamily="@font/proximaregular"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true">
+            <Button
+                android:id="@+id/chore_accept_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/accept"/>
+
+        </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
