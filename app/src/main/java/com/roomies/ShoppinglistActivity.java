@@ -65,7 +65,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
             code = menuIntent.getExtras().getString(apartmentID);
         }
         mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code).child("shoppinglist");
-        fab_btn = findViewById(R.id.addButton);
+        fab_btn = findViewById(R.id.add_shopping_button);
         amountText = findViewById(R.id.totalAmount);
         mApartmentDatabase.keepSynced(true);
         recyclerView = findViewById(R.id.recyceler_shopping);

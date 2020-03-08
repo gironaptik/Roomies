@@ -50,8 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2">
 
-                    <EditText
-                        android:id="@+id/edt_type"
+                    <TextView
+                        android:id="@+id/edt_by"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -93,6 +93,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         />
+
+                    <Spinner
+                        android:id="@+id/edt_kind"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:spinnerMode="dropdown"/>
 
 
 

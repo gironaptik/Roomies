@@ -39,6 +39,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Total Products: "
+                        android:fontFamily="@font/proximaregular"
                         android:padding="10dp"
                         android:textAppearance="?android:textAppearanceMedium"/>
                 </RelativeLayout>
@@ -51,6 +52,7 @@
                         android:id="@+id/totalAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/proximaregular"
                         android:text="0000"
                         android:padding="10dp"
                         android:textAppearance="?android:textAppearanceMedium"/>
@@ -65,6 +67,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyceler_shopping"
             android:layout_width="match_parent"
+            android:fontFamily="@font/proximaregular"
             android:layout_height="match_parent">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -72,7 +75,7 @@
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addButton"
+            android:id="@+id/add_shopping_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
