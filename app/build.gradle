@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.github.jrvansuita:PickImage:+'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.alexzh:circleimageview:1.2.0'
-
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

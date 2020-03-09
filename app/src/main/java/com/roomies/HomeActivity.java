@@ -39,9 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Intent menuIntent;
     private AppBarLayout appBarLayout;
-    private Button mMessagesBtn;
     private Button mShoppingBtn;
-    private Button mBillsBtn;
     private Button mAssignmentsBtn;
     private Button mFinancialBtn;
     private String image;
@@ -53,7 +51,6 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private List<String> usersKeyList;
     private List<User> userList;
-
 
 
     @Override
@@ -88,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
         appBarLayout = findViewById(R.id.appbar);
         setName();
         setBackgroud();
+        mFinancialBtn = findViewById(R.id.btn_finance);
         mShoppingBtn = findViewById(R.id.shopping_screen);
         mAssignmentsBtn = findViewById(R.id.btn_chores);
         mAssignmentsBtn.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +102,16 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent newIntent = new Intent(getApplicationContext(),ShoppinglistActivity.class);
+                newIntent.putExtra(apartmentID, code);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(newIntent);
+                overridePendingTransition(0,0);
+            }
+        });
+        mFinancialBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(getApplicationContext(),FinancialActivity.class);
                 newIntent.putExtra(apartmentID, code);
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(newIntent);

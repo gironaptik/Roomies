@@ -122,7 +122,7 @@
                 android:layout_alignParentRight="true"
                 android:orientation="vertical">
                 <Button
-                    android:id="@+id/finance"
+                    android:id="@+id/btn_finance"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/finance"/>
