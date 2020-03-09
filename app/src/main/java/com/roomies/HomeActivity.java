@@ -45,11 +45,14 @@ public class HomeActivity extends AppCompatActivity {
     private String image;
     private String code;
     private String apartmentID = "apartmentID";
+    private String apartmentUsrList = "apartmentUsrList";
+    private String apartmentUsrNameList = "apartmentUsrNameList";
     private String imageUrl = "imageUrl";
     private DatabaseReference mApartmentDatabase;
     private DatabaseReference mUserDatabase;
     private BottomNavigationView bottomNavigationView;
     private List<String> usersKeyList;
+    private List<String> usersNameList;
     private List<User> userList;
 
 
@@ -64,6 +67,8 @@ public class HomeActivity extends AppCompatActivity {
         setBottomNavigator();
         usersKeyList = new ArrayList<>();
         userList = new ArrayList<>();
+        usersNameList = new ArrayList<>();
+
 
 //        CircularImageView circularImageView = findViewById(R.id.my_avatar);
 //        Glide.with(getApplicationContext())
@@ -113,6 +118,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent newIntent = new Intent(getApplicationContext(),FinancialActivity.class);
                 newIntent.putExtra(apartmentID, code);
+                newIntent.putExtra(apartmentUsrList, (ArrayList<String>)usersKeyList);
+                newIntent.putExtra(apartmentUsrNameList, (ArrayList<String>)usersNameList);
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(newIntent);
                 overridePendingTransition(0,0);
@@ -144,12 +151,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private void userList() {
         userList.clear();
+        usersNameList.clear();
         for(String key : usersKeyList) {
             mUserDatabase.child(key).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
                     userList.add(user);
+                    usersNameList.add(user.getName());
                     setUsersAvatar(user.getImage());
 
                 }
@@ -159,7 +168,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
         }
-            }
+    }
 
     private void setBottomNavigator(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);

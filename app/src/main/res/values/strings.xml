@@ -52,4 +52,13 @@
         <item>Walk with the dog</item>
         <item>Other</item>
     </string-array>
+
+    <string-array name="finance_spinner">
+        <item>Electric</item>
+        <item>Water</item>
+        <item>Gas</item>
+        <item>Home Committee</item>
+        <item>Property tax</item>
+        <item>Other</item>
+    </string-array>
 </resources>

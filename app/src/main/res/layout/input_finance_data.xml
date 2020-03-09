@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorLoginView"
-                android:text="Add Chores List"
+                android:text="New Bill"
                 android:gravity="center"
                 android:padding="10dp"
                 android:textAppearance="?android:textAppearanceMedium"
@@ -33,51 +33,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="By:"
-                        android:textAppearance="?android:textAppearanceMedium"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/proximaregular"
                         android:padding="5dp"
-                        android:layout_margin="10dp"
-                        android:fontFamily="@font/proximaregular"/>
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2">
-
-                    <TextView
-                        android:id="@+id/edt_by"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        />
-
-
-
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="What Kind:"
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:padding="5dp"
-                        android:layout_margin="10dp"
-                        android:fontFamily="@font/proximaregular"/>
+                        android:text="Type of bill:"
+                        android:textAppearance="?android:textAppearanceMedium" />
 
 
                 </RelativeLayout>
@@ -89,7 +55,7 @@
                     android:layout_gravity="center">
 
                     <Spinner
-                        android:id="@+id/edt_kind"
+                        android:id="@+id/edt_bill_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
@@ -107,11 +73,12 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Note:"
+                        android:text="Sum"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:padding="5dp"
                         android:layout_margin="10dp"
@@ -123,10 +90,83 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_gravity="center">
+
+                    <EditText
+                        android:id="@+id/edt_sum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        />
+
+
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="From:"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/proximaregular"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="2">
 
                     <EditText
-                        android:id="@+id/edt_note"
+                        android:id="@+id/edt_from"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        />
+
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="To:"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/proximaregular"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/edt_to"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"

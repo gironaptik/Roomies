@@ -13,4 +13,16 @@ public class User {
     public String getImage() {
         return image;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
