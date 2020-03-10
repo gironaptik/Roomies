@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button mShoppingBtn;
     private Button mAssignmentsBtn;
     private Button mFinancialBtn;
+    private Button mChatBtn;
     private String image;
     private String code;
     private String apartmentID = "apartmentID";
@@ -91,8 +92,20 @@ public class HomeActivity extends AppCompatActivity {
         setName();
         setBackgroud();
         mFinancialBtn = findViewById(R.id.btn_finance);
+        mChatBtn = findViewById(R.id.btn_chat);
         mShoppingBtn = findViewById(R.id.shopping_screen);
         mAssignmentsBtn = findViewById(R.id.btn_chores);
+        mChatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(getApplicationContext(),ChatActivity.class);
+                newIntent.putExtra(apartmentID, code);
+                newIntent.putExtra(imageUrl, image);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(newIntent);
+                overridePendingTransition(0,0);
+            }
+        });
         mAssignmentsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,10 +188,10 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch(menuItem.getItemId()){
-                case R.id.chat:
-                    Intent newIntent = new Intent(getApplicationContext(),ChatActivity.class);
+                case R.id.settings:
+                    Intent newIntent = new Intent(getApplicationContext(),SettingsActivity.class);
                     newIntent.putExtra(apartmentID, code);
-                    newIntent.putExtra(imageUrl, image);
+//                    newIntent.putExtra(imageUrl, image);
                     startActivity(newIntent);
                     overridePendingTransition(0,0);
                     return true;
@@ -187,7 +200,7 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.profile:
                     Intent newIntent = new Intent(getApplicationContext(),ProfileActivity.class);
                     newIntent.putExtra(apartmentID, code);
-                    newIntent.putExtra(imageUrl, image);
+//                    newIntent.putExtra(imageUrl, image);
                     startActivity(newIntent);
                     overridePendingTransition(0,0);
                     return true;

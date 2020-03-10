@@ -143,8 +143,8 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch(menuItem.getItemId()){
-                case R.id.chat:
-                    Intent newIntent = new Intent(getApplicationContext(),ChatActivity.class);
+                case R.id.settings:
+                    Intent newIntent = new Intent(getApplicationContext(),SettingsActivity.class);
                     newIntent.putExtra(apartmentID, code);
                     startActivity(newIntent);
                     overridePendingTransition(0,0);

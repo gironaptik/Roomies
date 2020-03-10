@@ -3,6 +3,7 @@ package com.roomies;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,13 +50,19 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> listConversation;
     private ArrayAdapter arrayAdapter;
     private String user_msg_key;
+    private Toolbar chatToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        chatToolbar = findViewById(R.id.chat_toolbar);
+        setSupportActionBar(chatToolbar);
+        getSupportActionBar().setTitle("Chat Status");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mAuth = FirebaseAuth.getInstance();
-        setBottomNavigator();
         findAll();
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
@@ -130,32 +137,17 @@ public class ChatActivity extends AppCompatActivity {
         chatList.setAdapter(arrayAdapter);
     }
 
-    private void setBottomNavigator(){
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.chat);
-        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch(menuItem.getItemId()){
-                case R.id.chat:
-                    return true;
-            }
-            switch(menuItem.getItemId()){
-                case R.id.profile:
-                    Intent newIntent = new Intent(getApplicationContext(),ProfileActivity.class);
-                    newIntent.putExtra(apartmentID, code);
-                    startActivity(newIntent);
-                    overridePendingTransition(0,0);
-                    return true;
-            }
-            switch(menuItem.getItemId()){
-                case R.id.home:
-                    Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
-                    newIntent.putExtra(apartmentID, code);
-                    startActivity(newIntent);
-                    overridePendingTransition(0,0);
-                    return true;
-            }
-            return false;
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
+            newIntent.putExtra(apartmentID, code);
+            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(newIntent);        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
 
