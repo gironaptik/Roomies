@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -54,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private String code;
     private String apartmentID = "apartmentID";
     private String imageUrl = "imageUrl";
+    private TextView userEmail;
     private EditText editName;
     private CircularImageView circularImageView;
     private EditText editCurrentPassword;
@@ -107,6 +109,8 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         logout.setOnClickListener(view ->signOut());
     }
     private void findAllById(){
+        userEmail = findViewById(R.id.emailText);
+        userEmail.setText(mAuth.getCurrentUser().getEmail());
         editName = findViewById(R.id.editNameEditText);
         editName.setText(mAuth.getCurrentUser().getDisplayName());
         circularImageView = findViewById(R.id.my_avatar);
@@ -263,6 +267,8 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         apartmentDatabase.child("users").child(mAuth.getCurrentUser().getUid()).removeValue();
+        apartmentDatabase.child("financialBalance").child(mAuth.getCurrentUser().getUid()).removeValue();
+
     }
 
 }

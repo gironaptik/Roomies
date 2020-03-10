@@ -49,6 +49,7 @@ public class FinancialActivity extends AppCompatActivity {
     private Toolbar financialToolbar;
     private FirebaseAuth mAuth;
     private DatabaseReference mApartmentDatabase;
+    private DatabaseReference mApartmentUserDatabase;
     private DatabaseReference mUserDatabase;
     private Intent incomingIntent;
     private String code;
@@ -91,11 +92,11 @@ public class FinancialActivity extends AppCompatActivity {
             usersNameList = getIntent().getStringArrayListExtra(apartmentUsrNameList);
         }
         mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code).child("financial");
+        mApartmentUserDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code).child("financialBalance");
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
         fab_btn = findViewById(R.id.add_finance_button);
         mApartmentDatabase.keepSynced(true);
-
         setChart();
         recyclerView = findViewById(R.id.recyceler_financial);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -165,6 +166,12 @@ public class FinancialActivity extends AppCompatActivity {
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+    }
+
+    private void updateChart(){
+//        pieDataSet = new PieDataSet(value, "Balance");
+        pieChart.notifyDataSetChanged();
+        pieChart.invalidate();
     }
 
 //    private void userList() {
@@ -276,7 +283,26 @@ public class FinancialActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         postKey = getRef(i).getKey();
+                        mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        long userBalance = (long) dataSnapshot.getValue();
+                                        userBalance += Long.parseLong(model.getSum());
+                                        mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).setValue(userBalance);
+                                        value.add(new PieEntry(userBalance, mAuth.getCurrentUser().getDisplayName()));
+                                        updateChart();
+
+                                }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                         deleteChore();
+
+//                        value.add(new PieEntry(20f, "haha"));
+//                        updateChart();
                     }
                 });
 //                myViewHolder.my_view.setOnClickListener(new View.OnClickListener() {

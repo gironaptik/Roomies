@@ -50,14 +50,34 @@
                 android:backgroundTint="@color/colorProgressBar"/>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </FrameLayout>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight=".5">
+        android:layout_weight=".5"
+        android:orientation="vertical">
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        android:layout_gravity="bottom">
+        <TextView
+            android:id="@+id/balanceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Balance: "
+            android:fontFamily="@font/proximabold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="check"/>
+    </LinearLayout>
 </LinearLayout>
