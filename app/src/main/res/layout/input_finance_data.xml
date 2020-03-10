@@ -37,11 +37,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_margin="10dp"
+
                         android:fontFamily="@font/proximaregular"
-                        android:padding="5dp"
                         android:text="Type of bill:"
                         android:textAppearance="?android:textAppearanceMedium" />
 
@@ -80,7 +78,6 @@
                         android:layout_height="wrap_content"
                         android:text="Sum"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:padding="5dp"
                         android:layout_margin="10dp"
                         android:fontFamily="@font/proximaregular"/>
 
@@ -120,8 +117,7 @@
                         android:layout_height="wrap_content"
                         android:text="From:"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:padding="5dp"
-                        android:layout_margin="5dp"
+                        android:layout_margin="10dp"
                         android:fontFamily="@font/proximaregular"/>
 
 

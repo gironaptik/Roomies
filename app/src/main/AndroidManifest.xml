@@ -63,9 +63,9 @@
             android:exported="false"
             android:grantUriPermissions="true"
             tools:replace="android:authorities">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/picker_provider_paths" />
+<!--            <meta-shoppingData-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/picker_provider_paths" />-->
         </provider>
     </application>
 

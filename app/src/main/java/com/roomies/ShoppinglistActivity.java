@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.roomies.Model.Data;
+import com.roomies.Model.ShoppingData;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -82,8 +82,8 @@ public class ShoppinglistActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int totalAmount = 0;
                 for(DataSnapshot snap : dataSnapshot.getChildren()){
-                    Data data = snap.getValue(Data.class);
-                    totalAmount += data.getAmount();
+                    ShoppingData shoppingData = snap.getValue(ShoppingData.class);
+                    totalAmount += shoppingData.getAmount();
                     String tAmount = totalAmount + ".00";
                     amountText.setText(tAmount);
 
@@ -140,8 +140,8 @@ public class ShoppinglistActivity extends AppCompatActivity {
 
                     String id = mApartmentDatabase.push().getKey();
                     String mDate = DateFormat.getDateInstance().format(new Date());
-                    Data data = new Data(mType, ammint, mNote, mDate, id);
-                    mApartmentDatabase.child(id).setValue(data);    ////
+                    ShoppingData shoppingData = new ShoppingData(mType, ammint, mNote, mDate, id);
+                    mApartmentDatabase.child(id).setValue(shoppingData);    ////
                     Toast.makeText(getApplicationContext(), "Data Add", Toast.LENGTH_SHORT);
                     dialog.dismiss();
                 }
@@ -158,8 +158,8 @@ public class ShoppinglistActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<Data, MyViewHolder> adapter = new FirebaseRecyclerAdapter<Data, MyViewHolder>(
-                Data.class,
+        FirebaseRecyclerAdapter<ShoppingData, MyViewHolder> adapter = new FirebaseRecyclerAdapter<ShoppingData, MyViewHolder>(
+                ShoppingData.class,
                 R.layout.item_data,
                 MyViewHolder.class,
                 mApartmentDatabase
@@ -167,7 +167,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
 
 
             @Override
-            protected void populateViewHolder(MyViewHolder myViewHolder, Data model, int i) {
+            protected void populateViewHolder(MyViewHolder myViewHolder, ShoppingData model, int i) {
                 myViewHolder.setDate(model.getDate());
                 myViewHolder.setAmount(model.getAmount());
                 myViewHolder.setNote(model.getNote());
@@ -228,9 +228,9 @@ public class ShoppinglistActivity extends AppCompatActivity {
 
                 String date=DateFormat.getDateInstance().format(new Date());
 
-                Data data=new Data(type,intammount,note,date,postKey);
+                ShoppingData shoppingData =new ShoppingData(type,intammount,note,date,postKey);
 
-                mApartmentDatabase.child(postKey).setValue(data);
+                mApartmentDatabase.child(postKey).setValue(shoppingData);
 
 
                 dialog.dismiss();

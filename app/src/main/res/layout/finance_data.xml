@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="6dp"
+    android:elevation="6dp"
+    android:layout_margin="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/glide_slider_background_color"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/finance_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Type"
+                android:maxLines="1"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:fontFamily="@font/proximabold"/>
+
+
+            <TextView
+                android:id="@+id/finance_sum_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sum: "
+                android:maxLines="1"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/finance_type"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:fontFamily="@font/proximabold"/>
+
+            <TextView
+                android:id="@+id/finance_sum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Sum"
+                android:maxLines="1"
+                android:layout_toRightOf="@id/finance_sum_name"
+                android:layout_below="@+id/finance_type"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:fontFamily="@font/proximaregular"/>
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TextView
+                android:id="@+id/from_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From:"
+                android:fontFamily="@font/proximaregular"/>
+            <TextView
+                android:id="@+id/finance_date_from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/from_title"
+                android:text="16 Sep, 2020"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:fontFamily="@font/proximathin"
+                />
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/to_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To:"
+                android:fontFamily="@font/proximaregular"/>
+            <TextView
+                android:id="@+id/finance_date_to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/to_title"
+                android:text="16 Sep, 2020"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:fontFamily="@font/proximathin"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+        <Button
+            android:id="@+id/finance_accept_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/paid"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,6 +1,6 @@
 package com.roomies.Model;
 
-public class Data {
+public class ShoppingData {
 
     String type;
     int amount;
@@ -8,11 +8,11 @@ public class Data {
     String date;
     String id;
 
-    public Data(){
+    public ShoppingData(){
 
     }
 
-    public Data(String type, int amount, String note, String date, String id) {
+    public ShoppingData(String type, int amount, String note, String date, String id) {
         this.type = type;
         this.amount = amount;
         this.note = note;

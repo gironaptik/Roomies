@@ -9,11 +9,46 @@
 
     <include layout="@layout/toolbar"
         android:id="@+id/financial_toolbar"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".5">
 
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardElevation="10dp"
+                    android:elevation="10dp">
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyceler_financial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_finance_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="15dp"
+                app:fabSize="normal"
+                android:src="@drawable/ic_action_money"
+                android:backgroundTint="@color/colorProgressBar"/>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </FrameLayout>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
