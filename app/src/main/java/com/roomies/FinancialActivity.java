@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.roomies.Model.ApartmentBalance;
 import com.roomies.Model.ChoreData;
 import com.roomies.Model.FinanceData;
 
@@ -61,17 +63,12 @@ public class FinancialActivity extends AppCompatActivity {
     private List<PieEntry> value;
     private PieChart pieChart;
     private PieDataSet pieDataSet;
-    private List<User> userList;
+    private List<ApartmentBalance> balanceList;
     private FloatingActionButton fab_btn;
     private RecyclerView recyclerView;
     private String billTypeName;
     private String postKey;
-
-
-
-
-
-
+    private LinearLayout usersBalanceLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +80,8 @@ public class FinancialActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         usersNameList = new ArrayList<>();
+        balanceList = new ArrayList<>();
         value = new ArrayList<>();
-        userList = new ArrayList<>();
         incomingIntent = getIntent();
         if(!apartmentID.equals(null)) {
             code = incomingIntent.getExtras().getString(apartmentID);
@@ -104,9 +101,10 @@ public class FinancialActivity extends AppCompatActivity {
         linearLayoutManager.setReverseLayout(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-
         fab_btn.setOnClickListener(view -> customeDialog());
+        usersBalanceLayout = findViewById(R.id.balanceLayout);
+        balanceList();
+
 //        userList();
 
 
@@ -157,10 +155,10 @@ public class FinancialActivity extends AppCompatActivity {
         Description desc = new Description();
         desc.setText("");
         desc.setTextSize(20f);
-        for(String name : usersNameList){
-            value.add(new PieEntry(20f, name));
-            pieChart.notifyDataSetChanged();
-        }
+//        for(String name : usersNameList){
+//            value.add(new PieEntry(20f, name));
+//            pieChart.notifyDataSetChanged();
+//        }
         pieChart.setDescription(desc);
         pieDataSet = new PieDataSet(value, "Balance");
         PieData pieData = new PieData(pieDataSet);
@@ -283,14 +281,14 @@ public class FinancialActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         postKey = getRef(i).getKey();
-                        mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         long userBalance = (long) dataSnapshot.getValue();
                                         userBalance += Long.parseLong(model.getSum());
-                                        mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).setValue(userBalance);
-                                        value.add(new PieEntry(userBalance, mAuth.getCurrentUser().getDisplayName()));
-                                        updateChart();
+                                        mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).child("balance").setValue(userBalance);
+//                                        value.add(new PieEntry(userBalance, mAuth.getCurrentUser().getDisplayName()));
+//                                        updateChart();
 
                                 }
 
@@ -299,6 +297,7 @@ public class FinancialActivity extends AppCompatActivity {
 
                             }
                         });
+                        balanceList();
                         deleteChore();
 
 //                        value.add(new PieEntry(20f, "haha"));
@@ -353,6 +352,37 @@ public class FinancialActivity extends AppCompatActivity {
         public void setTo(String to){
             TextView mNote = my_view.findViewById(R.id.finance_date_to);
             mNote.setText(to);
+        }
+
+    }
+
+    private void balanceList(){
+        balanceList.clear();
+        usersNameList.clear();
+        usersBalanceLayout.removeAllViews();
+        value.clear();
+        for(String key : usersKeyList) {
+            mApartmentUserDatabase.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ApartmentBalance userBalance = dataSnapshot.getValue(ApartmentBalance.class);
+                    balanceList.add(userBalance);
+                    try {
+                        TextView currentBalance = new TextView(getApplicationContext());
+                        currentBalance.setText(userBalance.getName() + ": " + userBalance.getBalance());
+                        currentBalance.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        value.add(new PieEntry(userBalance.getBalance(), userBalance.getName()));
+                        updateChart();
+                        usersBalanceLayout.addView(currentBalance);
+                    }
+                    catch (NullPointerException o){
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
         }
 
     }

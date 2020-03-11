@@ -171,9 +171,9 @@ public class NewRoomFragment extends Fragment {
                 newApartmentDB.child("name").setValue(mApartmentName);
                 newApartmentDB.child("address").setValue(mAddress+ " " + mApartmentNumber);
                 newApartmentDB.child("users").child(mAuthUser.getUid()).setValue(mAuthUser.getPhotoUrl().toString());
-                newApartmentDB.child("financialBalance").child(mAuth.getCurrentUser().getUid()).setValue(0);
+                newApartmentDB.child("financialBalance").child(mAuth.getCurrentUser().getUid()).child("name").setValue(mAuth.getCurrentUser().getDisplayName());
+                newApartmentDB.child("financialBalance").child(mAuth.getCurrentUser().getUid()).child("balance").setValue(0);
                 mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).child("apartmentID").setValue(hash);
-                Toast.makeText(getContext(), "Your Apartment code is: " + hash, Toast.LENGTH_LONG).show();
                 Intent menuIntent = new Intent(getContext(), HomeActivity.class);
                 menuIntent.putExtra(apartmentID, hash);
                 startActivity(menuIntent);

@@ -122,8 +122,8 @@ public class IntroFragment extends Fragment {
                                 DatabaseReference mnApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments");
                                 mUserDatabase.child(mAuth.getCurrentUser().getUid()).child("apartmentID").setValue(apartmentCode);
                                 mnApartmentDatabase.child(apartmentCode).child("users").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
-                                mnApartmentDatabase.child(apartmentCode).child("financialBalance").child(mAuth.getCurrentUser().getUid()).setValue(0);
-
+                                mnApartmentDatabase.child(apartmentCode).child("financialBalance").child(mAuth.getCurrentUser().getUid()).child("name").setValue(mAuth.getCurrentUser().getDisplayName());
+                                mnApartmentDatabase.child(apartmentCode).child("financialBalance").child(mAuth.getCurrentUser().getUid()).child("balance").setValue(0);
                                 Intent apartmentIntent = new Intent(getContext(), HomeActivity.class);
                                 apartmentIntent.putExtra(apartmentID, joinRoomCode.getText().toString());
                                 apartmentIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
