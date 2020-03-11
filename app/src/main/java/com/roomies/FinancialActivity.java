@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -42,9 +46,12 @@ import com.roomies.Model.ChoreData;
 import com.roomies.Model.FinanceData;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FinancialActivity extends AppCompatActivity {
 
@@ -69,6 +76,10 @@ public class FinancialActivity extends AppCompatActivity {
     private String billTypeName;
     private String postKey;
     private LinearLayout usersBalanceLayout;
+    private final Calendar myCalendar = Calendar.getInstance();
+    private EditText from;
+    private EditText to;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,9 +228,43 @@ public class FinancialActivity extends AppCompatActivity {
 
             }
         });
+        from = myView.findViewById(R.id.edt_from);
+        to = myView.findViewById(R.id.edt_to);
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            }
+
+        };
+
+        to.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(FinancialActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        updateLabel(to);
+            }
+        });
+
+        from.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(FinancialActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        updateLabel(from);
+            }
+        });
+
         EditText sum = myView.findViewById(R.id.edt_sum);
-        EditText from = myView.findViewById(R.id.edt_from);
-        EditText to = myView.findViewById(R.id.edt_to);
         Button btnSave = myView.findViewById(R.id.btn_save);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -281,40 +326,34 @@ public class FinancialActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         postKey = getRef(i).getKey();
-                        mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        long userBalance = (long) dataSnapshot.getValue();
+                        mApartmentUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                long change = Long.parseLong(model.getSum()) / usersKeyList.size();
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    if(mAuth.getCurrentUser().getUid().equals(snapshot.getKey())){
+                                        long userBalance = (long) dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("balance").getValue();
                                         userBalance += Long.parseLong(model.getSum());
                                         mApartmentUserDatabase.child(mAuth.getCurrentUser().getUid()).child("balance").setValue(userBalance);
-//                                        value.add(new PieEntry(userBalance, mAuth.getCurrentUser().getDisplayName()));
-//                                        updateChart();
-
+                                    }
+                                    else{
+                                        long userBalance = (long) dataSnapshot.child(snapshot.getKey()).child("balance").getValue();
+                                        userBalance -= change;
+                                        mApartmentUserDatabase.child(snapshot.getKey()).child("balance").setValue(userBalance);
+                                    }
                                 }
+                                balanceList();
+                            }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                             }
                         });
-                        balanceList();
+//                        balanceList();
                         deleteChore();
-
-//                        value.add(new PieEntry(20f, "haha"));
-//                        updateChart();
                     }
                 });
-//                myViewHolder.my_view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        postKey = getRef(i).getKey();
-//                        by = model.getType();
-//                        note = model.getNote();
-////                        amount = model.getAmount();
-//
-//                        updateChore();
-//                    }
-//                });
             }
 
         };
@@ -369,8 +408,10 @@ public class FinancialActivity extends AppCompatActivity {
                     balanceList.add(userBalance);
                     try {
                         TextView currentBalance = new TextView(getApplicationContext());
-                        currentBalance.setText(userBalance.getName() + ": " + userBalance.getBalance());
+                        currentBalance.setText(userBalance.getName() + ": " + userBalance.getBalance() + " ");
                         currentBalance.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.proximaregular);
+                        currentBalance.setTypeface(typeface);
                         value.add(new PieEntry(userBalance.getBalance(), userBalance.getName()));
                         updateChart();
                         usersBalanceLayout.addView(currentBalance);
@@ -385,5 +426,12 @@ public class FinancialActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void updateLabel(EditText editText) {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        editText.setText(sdf.format(myCalendar.getTime()));
     }
 }
