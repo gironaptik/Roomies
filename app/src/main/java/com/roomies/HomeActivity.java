@@ -264,7 +264,7 @@ public class HomeActivity extends AppCompatActivity {
         lp.setMargins((int)margin, 0,0,0);
         CircularImageView circle = new CircularImageView(getApplicationContext());
         circle.setLayoutParams(lp);
-        circle.setBorderColor(Color.parseColor("#3f51b5"));
+        circle.setBorderColor(Color.parseColor("#00E676"/*"#3f51b5"*/));
         circle.setCircleColor(R.color.colorAccent);
         circle.setBorderWidth(borderWidth);
         circle.setShadowColor(Color.parseColor("#3f51b5"));
