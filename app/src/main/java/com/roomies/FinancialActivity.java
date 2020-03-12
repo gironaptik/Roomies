@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -53,7 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class FinancialActivity extends AppCompatActivity {
+public class FinancialActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener{
 
     private Toolbar financialToolbar;
     private FirebaseAuth mAuth;
@@ -79,6 +81,11 @@ public class FinancialActivity extends AppCompatActivity {
     private final Calendar myCalendar = Calendar.getInstance();
     private EditText from;
     private EditText to;
+    private Calendar startDate;
+    private Calendar endDate;
+    static final int DATE_DIALOG_ID = 0;
+    private int start = 0;
+    private int end = 1;
 
 
     @Override
@@ -115,6 +122,8 @@ public class FinancialActivity extends AppCompatActivity {
         fab_btn.setOnClickListener(view -> customeDialog());
         usersBalanceLayout = findViewById(R.id.balanceLayout);
         balanceList();
+
+
 
 //        userList();
 
@@ -230,26 +239,30 @@ public class FinancialActivity extends AppCompatActivity {
         });
         from = myView.findViewById(R.id.edt_from);
         to = myView.findViewById(R.id.edt_to);
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            }
-
-        };
+//        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int monthOfYear,
+//                                  int dayOfMonth) {
+//                // TODO Auto-generated method stub
+//                myCalendar.set(Calendar.YEAR, year);
+//                myCalendar.set(Calendar.MONTH, monthOfYear);
+//                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//            }
+//
+//        };
 
         to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(FinancialActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                        updateLabel(to);
+//                // TODO Auto-generated method stub
+//                new DatePickerDialog(FinancialActivity.this, date, myCalendar
+//                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+//                        String myFormat = "MM/dd/yy"; //In which you need put here
+//                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+//                        to.setText(sdf.format(myCalendar.getTime()));
+////                        updateLabel(to);
+                showDatePickerDialog(end);
             }
         });
 
@@ -257,10 +270,13 @@ public class FinancialActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(FinancialActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                        updateLabel(from);
+//                new DatePickerDialog(FinancialActivity.this, date, myCalendar
+//                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+//                        String myFormat = "MM/dd/yy"; //In which you need put here
+//                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+//                        from.setText(sdf.format(myCalendar.getTime()));
+                showDatePickerDialog(start);
             }
         });
 
@@ -364,6 +380,17 @@ public class FinancialActivity extends AppCompatActivity {
         mApartmentDatabase.child(postKey).removeValue();
     }
 
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        String myFormat = month + "/" + dayOfMonth + "/" + year;
+        if(datePicker.getTag().equals(start)) {
+            from.setText(myFormat);
+        }
+        else {
+            to.setText(myFormat);
+        }
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         View my_view;
@@ -408,11 +435,20 @@ public class FinancialActivity extends AppCompatActivity {
                     balanceList.add(userBalance);
                     try {
                         TextView currentBalance = new TextView(getApplicationContext());
-                        currentBalance.setText(userBalance.getName() + ": " + userBalance.getBalance() + " ");
+                        currentBalance.setText("\u25CF " + userBalance.getName() + ": " + userBalance.getBalance() + " ");
                         currentBalance.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                        Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.proximaregular);
+                        Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.proximabold);
                         currentBalance.setTypeface(typeface);
-                        value.add(new PieEntry(userBalance.getBalance(), userBalance.getName()));
+                        if(userBalance.getBalance() <= 0)
+                        {
+                            value.add(new PieEntry(1, userBalance.getName()));
+                            currentBalance.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.minus));
+                        }
+                        else {
+                            value.add(new PieEntry(userBalance.getBalance(), userBalance.getName()));
+                            currentBalance.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.plus));
+
+                        }
                         updateChart();
                         usersBalanceLayout.addView(currentBalance);
                     }
@@ -428,10 +464,20 @@ public class FinancialActivity extends AppCompatActivity {
 
     }
 
-    private void updateLabel(EditText editText) {
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        editText.setText(sdf.format(myCalendar.getTime()));
+    private void showDatePickerDialog(int i){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setTag(i);
+        datePickerDialog.show();
     }
+//
+//    private void updateLabel(EditText editText) {
+//        String myFormat = "MM/dd/yy"; //In which you need put here
+//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+//
+//        editText.setText(sdf.format(myCalendar.getTime()));
+//    }
 }

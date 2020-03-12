@@ -14,7 +14,8 @@
     <color name="sliderColor">#FFFFFF</color>
     <color name="glide_slider_background_color">#B9BBBD</color>
     <color name="total_color">#00E676</color>
-
+    <color name="plus">#00AB58</color>
+    <color name="minus">#A00000</color>
 
 
 
