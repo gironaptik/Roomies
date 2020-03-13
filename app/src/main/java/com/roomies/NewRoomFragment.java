@@ -45,7 +45,7 @@ public class NewRoomFragment extends Fragment {
     private EditText mApartmentNameView;
     private EditText mApartmentNumberView;
     private Button applyButton;
-    private String mApartmentImage = "https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/2395.jpg?alt=media&token=a30a1544-a933-41f9-8098-b58dbf371613";
+    private String mApartmentImage = "https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F1.jpg?alt=media&token=51b16512-ff5e-49d2-acd5-8286e0c45716";
     private String mApartmentName;
     private String mAddress;
     private String mApartmentNumber;

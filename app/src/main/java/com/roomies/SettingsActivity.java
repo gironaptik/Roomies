@@ -99,7 +99,6 @@ public class SettingsActivity extends AppCompatActivity {
         imagesLinks.add("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F4.jpg?alt=media&token=ddcbaf4d-7256-46d2-b347-61ce00707c75");
         imagesLinks.add("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F5.jpg?alt=media&token=3420fc2e-ebef-4629-a122-a10408772688");
 
-
     }
 
     private void createSliderModel() {
