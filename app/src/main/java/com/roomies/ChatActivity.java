@@ -119,7 +119,6 @@ public class ChatActivity extends AppCompatActivity {
         while(i.hasNext()){
             msg = (String) ((DataSnapshot)i.next()).getValue();
             user = (String) ((DataSnapshot)i.next()).getValue();
-
             conversation = user + ": " + msg;
             arrayAdapter.insert(conversation, arrayAdapter.getCount());
             arrayAdapter.notifyDataSetChanged();
@@ -139,13 +138,10 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
             finish();
-            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
-            newIntent.putExtra(apartmentID, code);
-            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(newIntent);        }
+        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -156,19 +156,6 @@ public class FinancialActivity extends AppCompatActivity implements  DatePickerD
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
-            newIntent.putExtra(apartmentID, code);
-            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(newIntent);        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void setChart(){
         pieChart = findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(true);
@@ -473,11 +460,13 @@ public class FinancialActivity extends AppCompatActivity implements  DatePickerD
         datePickerDialog.getDatePicker().setTag(i);
         datePickerDialog.show();
     }
-//
-//    private void updateLabel(EditText editText) {
-//        String myFormat = "MM/dd/yy"; //In which you need put here
-//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-//
-//        editText.setText(sdf.format(myCalendar.getTime()));
-//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

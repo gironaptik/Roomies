@@ -108,6 +108,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         leaveApartment.setOnClickListener(view -> leaveApartment());
         logout.setOnClickListener(view ->signOut());
     }
+
     private void findAllById(){
         userEmail = findViewById(R.id.emailText);
         userEmail.setText(mAuth.getCurrentUser().getEmail());
@@ -150,8 +151,9 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                 case R.id.settings:
                     Intent newIntent = new Intent(getApplicationContext(),SettingsActivity.class);
                     newIntent.putExtra(apartmentID, code);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                     startActivity(newIntent);
-                    overridePendingTransition(0,0);
+                    finish();
                     return true;
             }
             switch(menuItem.getItemId()){
@@ -162,8 +164,9 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                 case R.id.home:
                     Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
                     newIntent.putExtra(apartmentID, code);
+                    overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                     startActivity(newIntent);
-                    overridePendingTransition(0,0);
+                    finish();
                     return true;
             }
             return false;
@@ -192,17 +195,9 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
             Log.d(TAG, "onSuccess: " + uri);
             newImageUri = uri;
             updateUser();
-//            setUserProfileUri(uri);
         });
     }
 
-//    private void setUserProfileUri(Uri uri){
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        newImageUri = uri;
-//        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setPhotoUri(uri).build();
-//        user.updateProfile(request).addOnSuccessListener(aVoid -> Toast.makeText(ProfileActivity.this, "Updated", Toast.LENGTH_SHORT))
-//                .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Profile image failed..", Toast.LENGTH_SHORT));
-//    }
 
 
     @Override
@@ -210,13 +205,8 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         if (r.getError() == null) {
             bitmap = r.getBitmap();
             circularImageView.setImageBitmap(bitmap);
-//            handleUpload(bitmap);
-//            getImageView().setImageBitmap(r.getBitmap());
 
-            //r.getPath();
         } else {
-            //Handle possible errors
-            //TODO: do what you have to do with r.getError();
             Toast.makeText(this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -272,5 +262,8 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         apartmentDatabase.child("financialBalance").child(mAuth.getCurrentUser().getUid()).removeValue();
 
     }
-
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

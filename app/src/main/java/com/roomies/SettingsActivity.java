@@ -198,16 +198,18 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.profile:
                     Intent newIntent = new Intent(getApplicationContext(),ProfileActivity.class);
                     newIntent.putExtra(apartmentID, code);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                     startActivity(newIntent);
-                    overridePendingTransition(0,0);
+                    finish();
                     return true;
             }
             switch(menuItem.getItemId()){
                 case R.id.home:
                     Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
                     newIntent.putExtra(apartmentID, code);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                     startActivity(newIntent);
-                    overridePendingTransition(0,0);
+                    finish();
                     return true;
             }
             return false;
@@ -271,11 +273,12 @@ public class SettingsActivity extends AppCompatActivity {
         mApartmentDatabase.child(imageUrl).setValue(updateApartment.getImageUrl());
         mApartmentDatabase.child(name).setValue(updateApartment.getName());
         mApartmentDatabase.child(addressInput).setValue(updateApartment.getAddress());
-        Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
-        newIntent.putExtra(apartmentID, code);
-        newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(newIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
+        finish();
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        // Do Here what ever you want do on back press;
+//    }
 }

@@ -58,24 +58,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
         setBottomNavigator();
         usersKeyList = new ArrayList<>();
         userList = new ArrayList<>();
         usersNameList = new ArrayList<>();
-
-
-//        CircularImageView circularImageView = findViewById(R.id.my_avatar);
-//        Glide.with(getApplicationContext())
-//                .load(mAuth.getCurrentUser().getPhotoUrl())
-//                .into(circularImageView);
         avatarsLayout = findViewById(R.id.avatars_layout);
-
-//        setUsersAvatar(mAuth.getCurrentUser().getPhotoUrl().toString());
-
         collapsingToolbarLayout = findViewById(R.id.collapseToolbar);
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
@@ -90,47 +78,31 @@ public class HomeActivity extends AppCompatActivity {
         mChatBtn = findViewById(R.id.btn_chat);
         mShoppingBtn = findViewById(R.id.shopping_screen);
         mAssignmentsBtn = findViewById(R.id.btn_chores);
-        mChatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newIntent = new Intent(getApplicationContext(),ChatActivity.class);
-                newIntent.putExtra(apartmentID, code);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(newIntent);
-                overridePendingTransition(0,0);
-            }
+        mChatBtn.setOnClickListener(view -> {
+            Intent newIntent = new Intent(getApplicationContext(),ChatActivity.class);
+            newIntent.putExtra(apartmentID, code);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            startActivity(newIntent);
         });
-        mAssignmentsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newIntent = new Intent(getApplicationContext(),ChoresActivity.class);
-                newIntent.putExtra(apartmentID, code);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(newIntent);
-                overridePendingTransition(0,0);
-            }
+        mAssignmentsBtn.setOnClickListener(view -> {
+            Intent newIntent = new Intent(getApplicationContext(),ChoresActivity.class);
+            newIntent.putExtra(apartmentID, code);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            startActivity(newIntent);
         });
-        mShoppingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newIntent = new Intent(getApplicationContext(),ShoppinglistActivity.class);
-                newIntent.putExtra(apartmentID, code);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(newIntent);
-                overridePendingTransition(0,0);
-            }
+        mShoppingBtn.setOnClickListener(view -> {
+            Intent newIntent = new Intent(getApplicationContext(),ShoppinglistActivity.class);
+            newIntent.putExtra(apartmentID, code);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            startActivity(newIntent);
         });
-        mFinancialBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newIntent = new Intent(getApplicationContext(),FinancialActivity.class);
-                newIntent.putExtra(apartmentID, code);
-                newIntent.putExtra(apartmentUsrList, (ArrayList<String>)usersKeyList);
-                newIntent.putExtra(apartmentUsrNameList, (ArrayList<String>)usersNameList);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(newIntent);
-                overridePendingTransition(0,0);
-            }
+        mFinancialBtn.setOnClickListener(view -> {
+            Intent newIntent = new Intent(getApplicationContext(),FinancialActivity.class);
+            newIntent.putExtra(apartmentID, code);
+            newIntent.putExtra(apartmentUsrList, (ArrayList<String>)usersKeyList);
+            newIntent.putExtra(apartmentUsrNameList, (ArrayList<String>)usersNameList);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            startActivity(newIntent);
         });
     }
 
@@ -185,18 +157,17 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.settings:
                     Intent newIntent = new Intent(getApplicationContext(),SettingsActivity.class);
                     newIntent.putExtra(apartmentID, code);
-//                    newIntent.putExtra(imageUrl, image);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                     startActivity(newIntent);
-                    overridePendingTransition(0,0);
                     return true;
             }
             switch(menuItem.getItemId()){
                 case R.id.profile:
                     Intent newIntent = new Intent(getApplicationContext(),ProfileActivity.class);
                     newIntent.putExtra(apartmentID, code);
-//                    newIntent.putExtra(imageUrl, image);
+//                    overridePendingTransition(R.anim.fade_out, R.anim.fade_out);
                     startActivity(newIntent);
-                    overridePendingTransition(0,0);
+//                    finish();
                     return true;
             }
             switch(menuItem.getItemId()){

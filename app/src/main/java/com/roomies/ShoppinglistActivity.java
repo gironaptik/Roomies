@@ -213,36 +213,19 @@ public class ShoppinglistActivity extends AppCompatActivity {
         Button btnUpdate = mView.findViewById(R.id.btn_update);
         Button btnDelete = mView.findViewById(R.id.btn_delete);
 
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                type=edtType.getText().toString().trim();
-
-//                String mdAmmount=String.valueOf(amount);
-
-                String mAmmount=edtAmount.getText().toString().trim();
-
-                note=edtNote.getText().toString().trim();
-
-                int intammount=Integer.parseInt(mAmmount);
-
-                String date=DateFormat.getDateInstance().format(new Date());
-
-                ShoppingData shoppingData =new ShoppingData(type,intammount,note,date,postKey);
-
-                mApartmentDatabase.child(postKey).setValue(shoppingData);
-
-
-                dialog.dismiss();
-            }
+        btnUpdate.setOnClickListener(view -> {
+            type=edtType.getText().toString().trim();
+            String mAmmount=edtAmount.getText().toString().trim();
+            note=edtNote.getText().toString().trim();
+            int intammount=Integer.parseInt(mAmmount);
+            String date=DateFormat.getDateInstance().format(new Date());
+            ShoppingData shoppingData =new ShoppingData(type,intammount,note,date,postKey);
+            mApartmentDatabase.child(postKey).setValue(shoppingData);
+            dialog.dismiss();
         });
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mApartmentDatabase.child(postKey).removeValue();
-                dialog.dismiss();
-            }
+        btnDelete.setOnClickListener(view -> {
+            mApartmentDatabase.child(postKey).removeValue();
+            dialog.dismiss();
         });
 
 
@@ -250,13 +233,14 @@ public class ShoppinglistActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();
-            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
-            newIntent.putExtra(apartmentID, code);
-            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(newIntent);        }
+//            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
+//            newIntent.putExtra(apartmentID, code);
+//            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(newIntent);
+        }
 
         return super.onOptionsItemSelected(item);
     }

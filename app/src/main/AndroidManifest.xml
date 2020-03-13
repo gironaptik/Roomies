@@ -21,8 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".FinancialActivity" />
+        <activity android:name=".SettingsActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".FinancialActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ChoresActivity"
             android:screenOrientation="portrait" />

@@ -3,7 +3,6 @@ package com.roomies;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,22 +16,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.roomies.Model.ChoreData;
-
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -79,25 +72,7 @@ public class ChoresActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        fab_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customeDialog();
-            }
-        });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
-            newIntent.putExtra(apartmentID, code);
-            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(newIntent);        }
-
-        return super.onOptionsItemSelected(item);
+        fab_btn.setOnClickListener(view -> customeDialog());
     }
 
     private void customeDialog(){
@@ -109,7 +84,6 @@ public class ChoresActivity extends AppCompatActivity {
 
         TextView by = myView.findViewById(R.id.edt_by);
         by.setText(mAuth.getCurrentUser().getDisplayName());
-        EditText amount = myView.findViewById(R.id.edt_amount);
         EditText note = myView.findViewById(R.id.edt_note);
         Spinner choreSpinner = myView.findViewById(R.id.edt_kind);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.chores_spinner, android.R.layout.simple_spinner_item);
@@ -179,27 +153,12 @@ public class ChoresActivity extends AppCompatActivity {
                 myViewHolder.setTitle(choreKind);
                 myViewHolder.setUserName(mAuth.getCurrentUser().getDisplayName());
                 myViewHolder.setNote(model.getNote());
-//                myViewHolder.setAccept(code);
 
                 Button acceptButton = myViewHolder.my_view.findViewById(R.id.chore_accept_button);
-                acceptButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        postKey = getRef(i).getKey();
-                        deleteChore();
-                    }
+                acceptButton.setOnClickListener(view -> {
+                    postKey = getRef(i).getKey();
+                    deleteChore();
                 });
-//                myViewHolder.my_view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        postKey = getRef(i).getKey();
-//                        by = model.getType();
-//                        note = model.getNote();
-////                        amount = model.getAmount();
-//
-//                        updateChore();
-//                    }
-//                });
             }
 
         };
@@ -229,32 +188,16 @@ public class ChoresActivity extends AppCompatActivity {
         edtAmount.setSelection(String.valueOf(amount).length());
         edtNote.setText(note);
         edtNote.setSelection(note.length());
-
         Button btnUpdate = mView.findViewById(R.id.btn_update);
         Button btnDelete = mView.findViewById(R.id.btn_delete);
 
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                by =edtType.getText().toString().trim();
-
-//                String mdAmmount=String.valueOf(amount);
-
-//                String mAmmount=edtAmount.getText().toString().trim();
-
-                note=edtNote.getText().toString().trim();
-
-//                int intammount=Integer.parseInt(mAmmount);
-
-                String date=DateFormat.getDateInstance().format(new Date());
-
-                ChoreData data=new ChoreData(by,choreKind,note,date,postKey);
-
-                mApartmentDatabase.child(postKey).setValue(data);
-
-
-                dialog.dismiss();
-            }
+        btnUpdate.setOnClickListener(view -> {
+            by =edtType.getText().toString().trim();
+            note=edtNote.getText().toString().trim();
+            String date=DateFormat.getDateInstance().format(new Date());
+            ChoreData data=new ChoreData(by,choreKind,note,date,postKey);
+            mApartmentDatabase.child(postKey).setValue(data);
+            dialog.dismiss();
         });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -298,17 +241,16 @@ public class ChoresActivity extends AppCompatActivity {
             TextView mDate = my_view.findViewById(R.id.chore_date);
             mDate.setText(date);
         }
+    }
 
-//        public void setAccept(String code){
-//            Button acceptButton = my_view.findViewById(R.id.chore_accept_button);
-//
-//        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
+            finish();
+        }
 
-//        public void setAccept(int amount){
-//            TextView mAmount = my_view.findViewById(R.id.amount);
-//            String stam = String.valueOf(amount);
-//            mAmount.setText(stam) ;
-//        }
+        return super.onOptionsItemSelected(item);
     }
 
 
