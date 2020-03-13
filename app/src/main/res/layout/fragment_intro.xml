@@ -28,7 +28,7 @@
         <ImageView
             android:id="@+id/intro1image"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:layout_below="@+id/intro1title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
@@ -36,7 +36,7 @@
 
         <TextView
             android:id="@+id/intro1lines"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/intro1image"
             android:layout_centerHorizontal="true"

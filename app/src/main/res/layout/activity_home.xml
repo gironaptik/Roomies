@@ -6,20 +6,25 @@
     android:layout_height="match_parent"
     android:background= "@color/colorHome"
     tools:context=".HomeActivity">
-<FrameLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background= "@color/colorHome"
+        android:gravity="center">
+    <FrameLayout
     android:id="@+id/upperLayout"
     android:layout_width="match_parent"
-    android:layout_height="350dp">
+    android:layout_height="300dp">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:background="@android:color/transparent"
-        android:layout_height="350dp">
+        android:layout_height="300dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapseToolbar"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             app:contentScrim="@color/colorBackground"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
@@ -68,7 +73,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/upperLayout">
+        android:layout_below="@id/upperLayout"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
         <RelativeLayout
             android:id="@+id/first_row_icons"
@@ -83,11 +92,13 @@
                 android:layout_alignParentLeft="true"
                 android:gravity="center"
                 android:orientation="vertical">
-            <Button
-                android:id="@+id/shopping_screen"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/shopping"/>
+
+                <Button
+                    android:id="@+id/shopping_screen"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/shopping" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -179,7 +190,7 @@
         app:menu="@menu/menu_navigation"
         android:layout_alignParentBottom="true"/>
 
-
+    </RelativeLayout>
 </RelativeLayout>
 
 
