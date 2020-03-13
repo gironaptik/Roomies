@@ -12,7 +12,7 @@
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/upperLayout"
                 android:layout_width="match_parent"
@@ -23,8 +23,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:src="@mipmap/ic_launcher" />
@@ -42,7 +42,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/proximaregular"
                     android:text="Select Cover Image"
-                    android:textSize="25dp"
+                    android:textSize="20dp"
                     />
 
                 <com.denzcoskun.imageslider.ImageSlider
@@ -97,7 +97,7 @@
                     android:fontFamily="@font/proximaregular"
                     android:text="Name Your House"
                     android:layout_marginTop="10dp"
-                    android:textSize="25dp" />
+                    android:textSize="20dp" />
 
                 <EditText
                     android:id="@+id/apartmentName_update"
@@ -112,7 +112,7 @@
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/proximaregular"
                     android:text="Address Your House"
-                    android:textSize="25dp" />
+                    android:textSize="20dp" />
 
                 <AutoCompleteTextView
                     android:id="@+id/apartmentAddress_update"
@@ -132,7 +132,7 @@
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/proximaregular"
                     android:text="Apartment Number"
-                    android:textSize="25dp" />
+                    android:textSize="20dp" />
 
                 <EditText
                     android:id="@+id/apartmentNumber_update"
