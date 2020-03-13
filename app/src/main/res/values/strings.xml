@@ -37,6 +37,7 @@
     <string name="joinroom_code">Apartment Code</string>
     <string name="joinroom_button">Join</string>
     <string name="addroom_title">Customize your Apartment</string>
+    <string name="addroom_title_update">Update your apartment</string>
     <string name="saltValue">AfekaCollegeAndroid</string>
     <string name="logout">Logout</string>
     <string name="send">Send</string>

@@ -6,6 +6,122 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/upperLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#007BFF"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/proximabold"
+                    android:text="@string/addroom_title_update"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="30dp"
+                android:layout_below="@+id/upperLayout"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximaregular"
+                    android:text="Select Cover Image"
+                    android:textSize="25dp" />
+
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/image_slider_update"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
+                    app:selected_dot="@drawable/default_selected_dot"
+                    app:placeholder="@color/sliderColor"
+                    app:auto_cycle="true"
+                    app:corner_radius="20"
+                    app:delay="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximaregular"
+                    android:text="Name Your House"
+                    android:layout_marginTop="20dp"
+                    android:textSize="25dp" />
+
+                <EditText
+                    android:id="@+id/apartmentName_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/proximaregular"
+                    android:text="Address Your House"
+                    android:textSize="25dp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/apartmentAddress_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/address"
+                    android:textColor="@color/colorTextView"
+                    android:textColorHint="@color/colorAccent"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/proximaregular"
+                    android:text="Apartment Number"
+                    android:textSize="25dp" />
+
+                <EditText
+                    android:id="@+id/apartmentNumber_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Number" />
+
+                <Button
+                    android:id="@+id/newApplyApartmentButton_update"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximathin"
+                    android:text="Update" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
