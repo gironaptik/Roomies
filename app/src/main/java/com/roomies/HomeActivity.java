@@ -38,19 +38,15 @@ public class HomeActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private LinearLayout avatarsLayout;
-    private FirebaseAuth mAuth;
     private Intent menuIntent;
-    private AppBarLayout appBarLayout;
     private Button mShoppingBtn;
     private Button mAssignmentsBtn;
     private Button mFinancialBtn;
     private Button mChatBtn;
-    private String image;
     private String code;
     private String apartmentID = "apartmentID";
     private String apartmentUsrList = "apartmentUsrList";
     private String apartmentUsrNameList = "apartmentUsrNameList";
-    private String imageUrl = "imageUrl";
     private DatabaseReference mApartmentDatabase;
     private DatabaseReference mUserDatabase;
     private BottomNavigationView bottomNavigationView;
@@ -66,7 +62,6 @@ public class HomeActivity extends AppCompatActivity {
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
-        mAuth = FirebaseAuth.getInstance();
         setBottomNavigator();
         usersKeyList = new ArrayList<>();
         userList = new ArrayList<>();
@@ -85,12 +80,10 @@ public class HomeActivity extends AppCompatActivity {
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
-            image = menuIntent.getExtras().getString(imageUrl);
         }
         mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code);
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         createUserList();
-        appBarLayout = findViewById(R.id.appbar);
         setName();
         setBackgroud();
         mFinancialBtn = findViewById(R.id.btn_finance);
@@ -102,7 +95,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent newIntent = new Intent(getApplicationContext(),ChatActivity.class);
                 newIntent.putExtra(apartmentID, code);
-                newIntent.putExtra(imageUrl, image);
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(newIntent);
                 overridePendingTransition(0,0);
@@ -248,7 +240,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 collapsingToolbarLayout.setTitle(dataSnapshot.getValue().toString());
-                collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.minus));
+                collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.colorButtonBackground));
             }
 
             @Override

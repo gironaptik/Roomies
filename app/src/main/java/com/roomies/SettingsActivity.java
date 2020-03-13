@@ -3,6 +3,7 @@ package com.roomies;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -42,10 +43,13 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = SettingsActivity.class.getSimpleName();
     private BottomNavigationView bottomNavigationView;
     private List<SlideModel> slideModels;
-    private String image;
     private String code;
     private String apartmentID = "apartmentID";
     private String imageUrl = "imageUrl";
+    private String name = "name";
+    private String addressInput = "address";
+    private String apartmentTitle = "Apartment Code: ";
+    private String notFound = "Place not found: ";
     private Intent menuIntent;
     private Apartment currentApartment;
     private TextView apartmentCodeTitle;
@@ -54,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText apartmentAddressNumber;
     private ImageSlider imageSlider;
     private Button updateButton;
+    private Button shareButton;
     private String currentApartmentAddress;
     private String currentApartmentAddressNumber;
     private DatabaseReference mApartmentDatabase;
@@ -61,6 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
     private List<String> options;
     private String apiKey;
     private List<String> imagesLinks;
+    private String newUrl = null;
 
 
     @Override
@@ -84,10 +90,21 @@ public class SettingsActivity extends AppCompatActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(null){
-
-                }
+                updateApartment();
+            }
             });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Hey! Join to our apartment with the code: "+ code;
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Join to our apartment");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            }
+        });
 
     }
 
@@ -111,31 +128,29 @@ public class SettingsActivity extends AppCompatActivity {
         }
         imageSlider.setImageList(slideModels, true);
         imageSlider.stopSliding();
-        imageSlider.setItemClickListener(i -> currentApartment.setImageUrl(slideModels.get(i).getImageUrl()));
+        imageSlider.setItemClickListener(i -> newUrl = slideModels.get(i).getImageUrl());
     }
 
     private void findAll() {
         apartmentCodeTitle = findViewById(R.id.apartmentCodeTitle);
-        apartmentCodeTitle.setText("Apartment Code: " + code);
+        apartmentCodeTitle.setText(apartmentTitle + code);
         apartmentName = findViewById(R.id.apartmentName_update);
         apartmentAddress = findViewById(R.id.apartmentAddress_update);
         apartmentAddressNumber = findViewById(R.id.apartmentNumber_update);
         imageSlider = findViewById(R.id.image_slider_update);
         updateButton = findViewById(R.id.newApplyApartmentButton_update);
+        shareButton = findViewById(R.id.share_room_button);
     }
 
     private void updateFields(){
         apartmentName.setHint(currentApartment.getName());
         String address = currentApartment.getAddress();
-//        int index = address.lastIndexOf(" ");
-//        String apartmentNumber = address.substring(0, index);
+
         int lastIndexOf = address.lastIndexOf(" ");
         currentApartmentAddress = address.substring(0, lastIndexOf);
         currentApartmentAddressNumber = address.substring(lastIndexOf+1, address.length());
         apartmentAddressNumber.setHint(currentApartmentAddressNumber);
         apartmentAddress.setHint(currentApartmentAddress);
-
-        String imageUrl = currentApartment.getImageUrl();
         createSliderModel();
         apartmentAddress.addTextChangedListener(new TextWatcher() {
             @Override
@@ -159,6 +174,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 currentApartment = dataSnapshot.getValue(Apartment.class);
                 updateFields();
+                newUrl = currentApartment.getImageUrl();
+
             }
 
             @Override
@@ -226,9 +243,39 @@ public class SettingsActivity extends AppCompatActivity {
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
-                Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+                Log.e(TAG, notFound + apiException.getStatusCode());
             }
         });
+    }
+
+    private void updateApartment(){
+        Apartment updateApartment = new Apartment();
+        if(apartmentName.getText().toString().trim().equals("")){
+            updateApartment.setName(currentApartment.getName());
+        }
+        else{
+            updateApartment.setName(apartmentName.getText().toString().trim());
+        }
+        if(apartmentAddress.getText().toString().trim().equals("")){
+            updateApartment.setAddress(currentApartment.getAddress());
+        }
+        else{
+            updateApartment.setAddress(apartmentAddress.getText().toString().trim() + " "  + apartmentAddressNumber.getText().toString().trim());
+        }
+        if(newUrl.equals(null)){
+            updateApartment.setImageUrl(currentApartment.getImageUrl());
+        }
+        else{
+            updateApartment.setImageUrl(newUrl);
+        }
+        mApartmentDatabase.child(imageUrl).setValue(updateApartment.getImageUrl());
+        mApartmentDatabase.child(name).setValue(updateApartment.getName());
+        mApartmentDatabase.child(addressInput).setValue(updateApartment.getAddress());
+        Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
+        newIntent.putExtra(apartmentID, code);
+        newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(newIntent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
     }
 
 }
