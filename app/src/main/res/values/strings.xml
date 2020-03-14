@@ -41,6 +41,15 @@
     <string name="saltValue">AfekaCollegeAndroid</string>
     <string name="logout">Logout</string>
     <string name="send">Send</string>
+    <string name="users">users</string>
+    <string name="Users">Users</string>
+    <string name="Apartments">Apartments</string>
+    <string name="imageUrl">imageUrl</string>
+    <string name="username">name</string>
+
+
+
+
 
     <string-array name="chores_spinner">
         <item>Bathroom</item>

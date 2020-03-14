@@ -61,7 +61,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         menuIntent = getIntent();
-        if(!apartmentID.equals(null)) {
+        if (!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
         mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code).child("shoppinglist");
@@ -76,12 +76,11 @@ public class ShoppinglistActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
 
-
         mApartmentDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int totalAmount = 0;
-                for(DataSnapshot snap : dataSnapshot.getChildren()){
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     ShoppingData shoppingData = snap.getValue(ShoppingData.class);
                     totalAmount += shoppingData.getAmount();
                     String tAmount = totalAmount + ".00";
@@ -104,7 +103,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
         });
     }
 
-    private void customeDialog(){
+    private void customeDialog() {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(ShoppinglistActivity.this);
         LayoutInflater inflater = LayoutInflater.from(ShoppinglistActivity.this);
         View myView = inflater.inflate(R.layout.input_shopping_data, null);
@@ -126,15 +125,11 @@ public class ShoppinglistActivity extends AppCompatActivity {
                 try {
                     int ammint = Integer.parseInt(mAmount);
                     if (TextUtils.isEmpty(mType)) {
-                        type.setError("Required failed..");
+                        type.setError("Required failed");
                         return;
                     }
                     if (TextUtils.isEmpty(mAmount)) {
-                        type.setError("Required failed..");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(mNote)) {
-                        type.setError("Required failed..");
+                        amount.setError("Required failed");
                         return;
                     }
 
@@ -144,8 +139,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
                     mApartmentDatabase.child(id).setValue(shoppingData);    ////
                     Toast.makeText(getApplicationContext(), "Data Add", Toast.LENGTH_SHORT);
                     dialog.dismiss();
-                }
-                catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     amount.setError("Illegal Amount");
                 }
             }
@@ -173,16 +167,12 @@ public class ShoppinglistActivity extends AppCompatActivity {
                 myViewHolder.setNote(model.getNote());
                 myViewHolder.setType(model.getType());
 
-                myViewHolder.my_view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        postKey = getRef(i).getKey();
-                        type = model.getType();
-                        note = model.getNote();
-                        amount = model.getAmount();
-
-                        updateDate();
-                    }
+                myViewHolder.my_view.setOnClickListener(view -> {
+                    postKey = getRef(i).getKey();
+                    type = model.getType();
+                    note = model.getNote();
+                    amount = model.getAmount();
+                    updateDate();
                 });
             }
 
@@ -191,7 +181,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    public void updateDate(){
+    public void updateDate() {
 
         AlertDialog.Builder myDialog = new AlertDialog.Builder(ShoppinglistActivity.this);
         LayoutInflater inflater = LayoutInflater.from(ShoppinglistActivity.this);
@@ -214,12 +204,12 @@ public class ShoppinglistActivity extends AppCompatActivity {
         Button btnDelete = mView.findViewById(R.id.btn_delete);
 
         btnUpdate.setOnClickListener(view -> {
-            type=edtType.getText().toString().trim();
-            String mAmmount=edtAmount.getText().toString().trim();
-            note=edtNote.getText().toString().trim();
-            int intammount=Integer.parseInt(mAmmount);
-            String date=DateFormat.getDateInstance().format(new Date());
-            ShoppingData shoppingData =new ShoppingData(type,intammount,note,date,postKey);
+            type = edtType.getText().toString().trim();
+            String mAmmount = edtAmount.getText().toString().trim();
+            note = edtNote.getText().toString().trim();
+            int intammount = Integer.parseInt(mAmmount);
+            String date = DateFormat.getDateInstance().format(new Date());
+            ShoppingData shoppingData = new ShoppingData(type, intammount, note, date, postKey);
             mApartmentDatabase.child(postKey).setValue(shoppingData);
             dialog.dismiss();
         });
@@ -231,6 +221,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -246,7 +237,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
     }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         View my_view;
 
@@ -255,25 +246,25 @@ public class ShoppinglistActivity extends AppCompatActivity {
             my_view = itemView;
         }
 
-        public void setType(String type){
+        public void setType(String type) {
             TextView mType = my_view.findViewById(R.id.type);
             mType.setText(type);
         }
 
-        public void setNote(String note){
+        public void setNote(String note) {
             TextView mNote = my_view.findViewById(R.id.note);
             mNote.setText(note);
         }
 
-        public void setDate(String date){
+        public void setDate(String date) {
             TextView mDate = my_view.findViewById(R.id.date);
             mDate.setText(date);
         }
 
-        public void setAmount(int amount){
+        public void setAmount(int amount) {
             TextView mAmount = my_view.findViewById(R.id.amount);
             String stam = String.valueOf(amount);
-            mAmount.setText(stam) ;
+            mAmount.setText(stam);
         }
     }
 }

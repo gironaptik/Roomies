@@ -16,6 +16,15 @@
     <color name="total_color">#00E676</color>
     <color name="plus">#00AB58</color>
     <color name="minus">#A00000</color>
+    <color name="avatarCircleBorder">#00E676</color>
+    <color name="avatarCircleShadow">#3f51b5</color>
+    <color name="transparent">#80000000</color>
+
+
+
+
+
+
 
 
 

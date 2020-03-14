@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background= "@color/colorHome"
+    android:fitsSystemWindows="true"
     tools:context=".HomeActivity">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,69 +13,72 @@
         android:background= "@color/colorHome"
         android:gravity="center">
     <FrameLayout
-    android:id="@+id/upperLayout"
-    android:layout_width="match_parent"
-    android:layout_height="300dp">
+        android:id="@+id/upperLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:background="@android:color/transparent"
         android:layout_height="300dp">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapseToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:contentScrim="@color/colorBackground"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="exitUntilCollapsed|scroll"
-            app:statusBarScrim="@color/colorAccent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:fontFamily="@font/proximaregular"
-            app:title="App Title"
-            app:expandedTitleMargin="60dp">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarId"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorHome">
+            <ImageView
+                android:id="@+id/collapseToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                android:layout_height="wrap_content"
+                android:radius="10dp"
+                android:fontFamily="@font/proximaregular"
+                android:layout_marginBottom="30dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/avatars_layout"
+                android:layout_marginBottom="30dp"
+                android:background="#88DCDCDC">
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <TextView
+                    android:id="@+id/myImageViewText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/avatars_layout"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginBottom="40dp"
+                    android:fontFamily="@font/proximaregular"
+                    android:textSize="35dp"
+                    android:gravity="bottom"
+                    android:text="Hello"
+                    android:textColor="@color/quantum_white_100"
+                    android:shadowColor="#555555"
+                    android:shadowDx="5.0"
+                    android:shadowDy="5.0"
+                    android:shadowRadius="3.0"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/avatars_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"/>
+        </RelativeLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-    <LinearLayout
-        android:id="@+id/avatars_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="15dp"
-        android:orientation="horizontal">
-<!--    <com.mikhaellopez.circularimageview.CircularImageView-->
-<!--        android:id="@+id/my_avatar"-->
-<!--        android:layout_width="70dp"-->
-<!--        android:layout_height="70dp"-->
-<!--        android:src="@drawable/avatar1"-->
-<!--        app:civ_border_color="#3f51b5"-->
-<!--        app:civ_border_width="4dp"-->
-<!--        app:civ_shadow_color="#3f51b5"-->
-<!--        android:scaleType="centerInside" />-->
-
-    </LinearLayout>
-</FrameLayout>
-
-<!--    <androidx.core.widget.NestedScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-<!--    </androidx.core.widget.NestedScrollView>-->
+    </FrameLayout>
 
     <RelativeLayout
+        android:id="@+id/icons_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/upperLayout"
+        android:layout_above="@id/bottom_navigation"
         android:gravity="center"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
@@ -192,7 +196,7 @@
         android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
-</RelativeLayout>
+</FrameLayout>
 
 
 

@@ -212,7 +212,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     }
 
     private void updateUser(){
-//        handleUpload(bitmap);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userDatabase.child("image").setValue(newImageUri.toString());
         userDatabase.child("name").setValue(editName.getText().toString());

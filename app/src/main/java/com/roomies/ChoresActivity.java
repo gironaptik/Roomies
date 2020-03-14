@@ -113,14 +113,6 @@ public class ChoresActivity extends AppCompatActivity {
                         by.setError("Required failed..");
                         return;
                     }
-                    if (TextUtils.isEmpty(mKind)) {
-                        by.setError("Required failed..");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(mNote)) {
-                        by.setError("Required failed..");
-                        return;
-                    }
 
                     String id = mApartmentDatabase.push().getKey();
                     String mDate = DateFormat.getDateInstance().format(new Date());
@@ -168,47 +160,6 @@ public class ChoresActivity extends AppCompatActivity {
 
     private void deleteChore() {
         mApartmentDatabase.child(postKey).removeValue();
-    }
-
-    public void updateChore(){
-
-        AlertDialog.Builder myDialog = new AlertDialog.Builder(ChoresActivity.this);
-        LayoutInflater inflater = LayoutInflater.from(ChoresActivity.this);
-        View mView = inflater.inflate(R.layout.update_inputfield, null);
-        AlertDialog dialog = myDialog.create();
-        dialog.setView(mView);
-
-        final EditText edtType = mView.findViewById(R.id.edt_type_update);
-        final EditText edtAmount = mView.findViewById(R.id.edt_amount_update);
-        final EditText edtNote = mView.findViewById(R.id.edt_note_update);
-
-        edtType.setText(by);
-        edtType.setSelection(by.length());
-        edtAmount.setText(String.valueOf(amount));
-        edtAmount.setSelection(String.valueOf(amount).length());
-        edtNote.setText(note);
-        edtNote.setSelection(note.length());
-        Button btnUpdate = mView.findViewById(R.id.btn_update);
-        Button btnDelete = mView.findViewById(R.id.btn_delete);
-
-        btnUpdate.setOnClickListener(view -> {
-            by =edtType.getText().toString().trim();
-            note=edtNote.getText().toString().trim();
-            String date=DateFormat.getDateInstance().format(new Date());
-            ChoreData data=new ChoreData(by,choreKind,note,date,postKey);
-            mApartmentDatabase.child(postKey).setValue(data);
-            dialog.dismiss();
-        });
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mApartmentDatabase.child(postKey).removeValue();
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
 

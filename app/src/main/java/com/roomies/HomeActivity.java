@@ -3,6 +3,7 @@ package com.roomies;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,11 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -36,7 +40,8 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ImageView collapsingToolbarLayout;
+    private TextView mTitleText;
     private LinearLayout avatarsLayout;
     private Intent menuIntent;
     private Button mShoppingBtn;
@@ -69,8 +74,9 @@ public class HomeActivity extends AppCompatActivity {
         if(!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
-        mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code);
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Apartments)).child(code);
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Users));
+        mTitleText = findViewById(R.id.myImageViewText);
         createUserList();
         setName();
         setBackgroud();
@@ -107,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void createUserList() {
-        mApartmentDatabase.child("users").addValueEventListener(new ValueEventListener() {
+        mApartmentDatabase.child(getResources().getString(R.string.users)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersKeyList.clear();
@@ -179,7 +185,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setBackgroud(){
-        mApartmentDatabase.child("imageUrl").addValueEventListener(new ValueEventListener() {
+        mApartmentDatabase.child(getResources().getString(R.string.imageUrl)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String url = dataSnapshot.getValue(String.class);
@@ -207,11 +213,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setName(){
-        mApartmentDatabase.child("name").addValueEventListener(new ValueEventListener() {
+        mApartmentDatabase.child(getResources().getString(R.string.username)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                collapsingToolbarLayout.setTitle(dataSnapshot.getValue().toString());
-                collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.total_color));
+                mTitleText.setText(dataSnapshot.getValue().toString());
+//                collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.total_color));
+//                Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.proximaregular);
+//                collapsingToolbarLayout.setExpandedTitleTypeface(typeface);
             }
 
             @Override
@@ -230,10 +238,10 @@ public class HomeActivity extends AppCompatActivity {
         lp.setMargins((int)margin, 0,0,0);
         CircularImageView circle = new CircularImageView(getApplicationContext());
         circle.setLayoutParams(lp);
-        circle.setBorderColor(Color.parseColor("#00E676"/*"#3f51b5"*/));
+        circle.setBorderColor(getResources().getColor(R.color.avatarCircleBorder));
         circle.setCircleColor(R.color.colorAccent);
         circle.setBorderWidth(borderWidth);
-        circle.setShadowColor(Color.parseColor("#3f51b5"));
+        circle.setShadowColor(getResources().getColor(R.color.avatarCircleShadow));
         circle.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         Glide.with(getApplicationContext())
                 .load(image)
