@@ -211,7 +211,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 collapsingToolbarLayout.setTitle(dataSnapshot.getValue().toString());
-                collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.colorButtonBackground));
+                collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.total_color));
             }
 
             @Override
