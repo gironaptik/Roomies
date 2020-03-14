@@ -43,7 +43,6 @@ import java.io.ByteArrayOutputStream;
 public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
-    private int TAKE_IMAGE_CODE = 10001;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
@@ -51,10 +50,11 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private DatabaseReference apartmentDatabase;
     private Intent menuIntent;
     private BottomNavigationView bottomNavigationView;
-    private String image;
     private String code;
     private String apartmentID = "apartmentID";
-    private String imageUrl = "imageUrl";
+    private String updateNotification = "User profile updated.";
+    private String image = "image";
+    private String financialBalance = "financialBalance";
     private TextView userEmail;
     private EditText editName;
     private CircularImageView circularImageView;
@@ -77,14 +77,14 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         setBottomNavigator();
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        userDatabase = mDatabase.child("Users").child(mAuth.getCurrentUser().getUid());
+        userDatabase = mDatabase.child(getResources().getString(R.string.Users)).child(mAuth.getCurrentUser().getUid());
         mProgress = new ProgressDialog(this);
         findAllById();
         menuIntent = getIntent();
         if(!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
-        apartmentDatabase = mDatabase.child("Apartments").child(code);
+        apartmentDatabase = mDatabase.child(getResources().getString(R.string.Apartments)).child(code);
         Glide.with(this)
                 .asBitmap()
                 .load(mAuth.getCurrentUser().getPhotoUrl())
@@ -198,8 +198,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         });
     }
 
-
-
     @Override
     public void onPickResult(PickResult r) {
         if (r.getError() == null) {
@@ -213,9 +211,9 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private void updateUser(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        userDatabase.child("image").setValue(newImageUri.toString());
-        userDatabase.child("name").setValue(editName.getText().toString());
-        apartmentDatabase.child("financialBalance").child(user.getUid()).child("name").setValue(editName.getText().toString());
+        userDatabase.child(image).setValue(newImageUri.toString());
+        userDatabase.child(getResources().getString(R.string.username)).setValue(editName.getText().toString());
+        apartmentDatabase.child(financialBalance).child(user.getUid()).child(getResources().getString(R.string.username)).setValue(editName.getText().toString());
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(editName.getText().toString())
                 .setPhotoUri(newImageUri)
@@ -224,7 +222,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "User profile updated.");
+                        Log.d(TAG, updateNotification);
                     }
                 });
         if(!editCurrentPassword.getText().toString().equals(null) && !editNewPassword.getText().toString().equals(null) && credential != null){
@@ -253,12 +251,12 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     }
     private void leaveApartment(){
-        userDatabase.child("apartmentID").setValue("0");
+        userDatabase.child(apartmentID).setValue("0");
         Intent intent = new Intent(getApplicationContext(), ApartmentActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        apartmentDatabase.child("users").child(mAuth.getCurrentUser().getUid()).removeValue();
-        apartmentDatabase.child("financialBalance").child(mAuth.getCurrentUser().getUid()).removeValue();
+        apartmentDatabase.child(getResources().getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).removeValue();
+        apartmentDatabase.child(financialBalance).child(mAuth.getCurrentUser().getUid()).removeValue();
 
     }
     @Override

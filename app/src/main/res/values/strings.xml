@@ -41,11 +41,30 @@
     <string name="saltValue">AfekaCollegeAndroid</string>
     <string name="logout">Logout</string>
     <string name="send">Send</string>
+    <string name="user">user</string>
     <string name="users">users</string>
     <string name="Users">Users</string>
     <string name="Apartments">Apartments</string>
     <string name="imageUrl">imageUrl</string>
     <string name="username">name</string>
+    <string name="chat">chat</string>
+    <string name="Chat">Chat</string>
+    <string name="msg">msg</string>
+    <string name="joinOurRoom">"Hey! Join to our apartment with the code: "</string>
+    <string name="joinOurRoomTitle">Join to our apartment</string>
+    <string name="shareVia">Share via</string>
+    <string name="addressDB">address</string>
+    <string name="financialBalance">financialBalance</string>
+    <string name="balance">balance</string>
+    <string name="emailAdd">email</string>
+    <string name="Updated">Updated</string>
+    <string name="imageFailed">Profile image failed..</string>
+    <string name="typeSomething">You should type something</string>
+    <string name="notExist">Apartment code not Exist!</string>
+
+
+
+
 
 
 

@@ -32,6 +32,7 @@
         android:fontFamily="@font/proximabold"
         android:text="Set your Avatar"
         android:textColor="@color/colorTextView"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="20dp"/>
 
     <TextView
@@ -92,7 +93,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@color/colorButtonBackground"
+        android:background="@drawable/circle_layout"
+        android:fontFamily="@font/proximaregular"
+        android:padding="10dp"
         android:text="Save Changes"/>
 
     <LinearLayout
@@ -105,7 +108,9 @@
             android:id="@+id/edit_leaveApartment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorButtonBackground"
+            android:background="@drawable/circle_layout"
+            android:fontFamily="@font/proximaregular"
+            android:padding="10dp"
             android:text="Leave Apartment"/>
 
         <Button
@@ -113,8 +118,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:background="@color/colorButtonBackground"
-
+            android:background="@drawable/circle_layout"
+            android:fontFamily="@font/proximaregular"
+            android:padding="10dp"
             android:text="Log-out"/>
     </LinearLayout>
 </LinearLayout>

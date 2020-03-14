@@ -207,7 +207,6 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -217,9 +216,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mTitleText.setText(dataSnapshot.getValue().toString());
-//                collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), R.color.total_color));
-//                Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.proximaregular);
-//                collapsingToolbarLayout.setExpandedTitleTypeface(typeface);
             }
 
             @Override

@@ -2,8 +2,10 @@ package com.roomies;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.api.ApiException;
@@ -33,7 +36,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import org.hashids.Hashids;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +51,10 @@ public class NewRoomFragment extends Fragment {
     private EditText mApartmentNumberView;
     private Button applyButton;
     private String mApartmentImage = "https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/covers%2F1.jpg?alt=media&token=51b16512-ff5e-49d2-acd5-8286e0c45716";
+    private String counter = "Counter";
+    private String apartments = "Apartments";
+    private String apartmentID = "apartmentID";
+    private String id = "id";
     private String mApartmentName;
     private String mAddress;
     private String mApartmentNumber;
@@ -55,17 +64,11 @@ public class NewRoomFragment extends Fragment {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mAuthUser;
-    private String counter = "Counter";
-    private String apartments = "Apartments";
-    private String apartmentID = "apartmentID";
-    private String imageUrl = "imageUrl";
     private String saltValue;
     private String hash;
     private ImageSlider imageSlider;
     private List<SlideModel> slideModels;
     private long idCounter;
-    private int coverIndex;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,11 +121,11 @@ public class NewRoomFragment extends Fragment {
         return rootView;
     }
 
-    private void autoComplete(){
+    private void autoComplete() {
         PlacesClient placesClient = Places.createClient(getContext());
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
         RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(-33.880490, 151.184363), //dummy lat/lng
+                new LatLng(-33.880490, 151.184363),
                 new LatLng(-33.858754, 151.229596));
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 .setLocationBias(bounds)
@@ -152,28 +155,28 @@ public class NewRoomFragment extends Fragment {
         });
     }
 
-    private void createRoom(){
+    private void createRoom() {
         mApartmentName = mApartmentNameView.getText().toString();
         mAddress = mAddressField.getText().toString();
         mApartmentNumber = mApartmentNumberView.getText().toString();
-        DatabaseReference apartmentsDB =  mDatabase.child(apartments);
+        DatabaseReference apartmentsDB = mDatabase.child(apartments);
         mDatabase.child(counter).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long number = (Long)dataSnapshot.getValue();
-                mDatabase.child(counter).setValue(number+1);
-                idCounter = number+1;
+                long number = (Long) dataSnapshot.getValue();
+                mDatabase.child(counter).setValue(number + 1);
+                idCounter = number + 1;
                 Hashids hashids = new Hashids(saltValue);
                 hash = hashids.encode(idCounter);
-                DatabaseReference newApartmentDB =  apartmentsDB.child(hash);
-                newApartmentDB.child("id").setValue(hash);
-                newApartmentDB.child("imageUrl").setValue(mApartmentImage);
-                newApartmentDB.child("name").setValue(mApartmentName);
-                newApartmentDB.child("address").setValue(mAddress+ " " + mApartmentNumber);
-                newApartmentDB.child("users").child(mAuthUser.getUid()).setValue(mAuthUser.getPhotoUrl().toString());
-                newApartmentDB.child("financialBalance").child(mAuth.getCurrentUser().getUid()).child("name").setValue(mAuth.getCurrentUser().getDisplayName());
-                newApartmentDB.child("financialBalance").child(mAuth.getCurrentUser().getUid()).child("balance").setValue(0);
-                mDatabase.child("Users").child(mAuth.getCurrentUser().getUid()).child("apartmentID").setValue(hash);
+                DatabaseReference newApartmentDB = apartmentsDB.child(hash);
+                newApartmentDB.child(id).setValue(hash);
+                newApartmentDB.child(getResources().getString(R.string.imageUrl)).setValue(mApartmentImage);
+                newApartmentDB.child(getResources().getString(R.string.username)).setValue(mApartmentName);
+                newApartmentDB.child(getResources().getString(R.string.addressDB)).setValue(mAddress + " " + mApartmentNumber);
+                newApartmentDB.child(getResources().getString(R.string.users)).child(mAuthUser.getUid()).setValue(mAuthUser.getPhotoUrl().toString());
+                newApartmentDB.child(getResources().getString(R.string.financialBalance)).child(mAuth.getCurrentUser().getUid()).child(getResources().getString(R.string.username)).setValue(mAuth.getCurrentUser().getDisplayName());
+                newApartmentDB.child(getResources().getString(R.string.financialBalance)).child(mAuth.getCurrentUser().getUid()).child(getResources().getString(R.string.balance)).setValue(0);
+                mDatabase.child(getResources().getString(R.string.Users)).child(mAuth.getCurrentUser().getUid()).child(apartmentID).setValue(hash);
                 Intent menuIntent = new Intent(getContext(), HomeActivity.class);
                 menuIntent.putExtra(apartmentID, hash);
                 startActivity(menuIntent);
@@ -187,8 +190,6 @@ public class NewRoomFragment extends Fragment {
         });
 
     }
-
-
 
 
 }

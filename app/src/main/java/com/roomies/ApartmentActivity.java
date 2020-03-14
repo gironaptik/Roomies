@@ -63,14 +63,14 @@ public class ApartmentActivity extends AppIntro2 implements CommunicationInterfa
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        Intent menuIntent = new Intent(getApplicationContext(), MenuActivity.class);
+        Intent menuIntent = new Intent(getApplicationContext(), ApartmentActivity.class);
         startActivity(menuIntent);
     }
 
     @Override
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
-        Intent menuIntent = new Intent(getApplicationContext(), MenuActivity.class);
+        Intent menuIntent = new Intent(getApplicationContext(), ApartmentActivity.class);
         startActivity(menuIntent);
     }
 

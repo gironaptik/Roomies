@@ -40,6 +40,11 @@ public class ShoppinglistActivity extends AppCompatActivity {
     private Intent menuIntent;
     private String code;
     private String apartmentID = "apartmentID";
+    private String shopping_list = "Shopping List";
+    private String shoppinglistDB = "shoppinglist";
+    private String reqFailed = "Required failed";
+    private String dataAdd = "Data Add";
+    private String errorAmount = "Illegal Amount";
     private FloatingActionButton fab_btn;
     private RecyclerView recyclerView;
     private TextView amountText;
@@ -55,7 +60,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shoppinglist);
         shoppingToolbar = findViewById(R.id.shopping_toolbar);
         setSupportActionBar(shoppingToolbar);
-        getSupportActionBar().setTitle("Shopping List");
+        getSupportActionBar().setTitle(shopping_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mAuth = FirebaseAuth.getInstance();
@@ -64,7 +69,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
         if (!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
-        mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code).child("shoppinglist");
+        mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Apartments)).child(code).child(shoppinglistDB);
         fab_btn = findViewById(R.id.add_shopping_button);
         amountText = findViewById(R.id.totalAmount);
         mApartmentDatabase.keepSynced(true);
@@ -95,12 +100,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
             }
         });
 
-        fab_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customeDialog();
-            }
-        });
+        fab_btn.setOnClickListener(view -> customeDialog());
     }
 
     private void customeDialog() {
@@ -115,33 +115,30 @@ public class ShoppinglistActivity extends AppCompatActivity {
         EditText note = myView.findViewById(R.id.edt_note);
         Button btnSave = myView.findViewById(R.id.btn_save);
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String mType = type.getText().toString().trim();
-                String mAmount = amount.getText().toString().trim();
-                String mNote = note.getText().toString().trim();
+        btnSave.setOnClickListener(view -> {
+            String mType = type.getText().toString().trim();
+            String mAmount = amount.getText().toString().trim();
+            String mNote = note.getText().toString().trim();
 
-                try {
-                    int ammint = Integer.parseInt(mAmount);
-                    if (TextUtils.isEmpty(mType)) {
-                        type.setError("Required failed");
-                        return;
-                    }
-                    if (TextUtils.isEmpty(mAmount)) {
-                        amount.setError("Required failed");
-                        return;
-                    }
-
-                    String id = mApartmentDatabase.push().getKey();
-                    String mDate = DateFormat.getDateInstance().format(new Date());
-                    ShoppingData shoppingData = new ShoppingData(mType, ammint, mNote, mDate, id);
-                    mApartmentDatabase.child(id).setValue(shoppingData);    ////
-                    Toast.makeText(getApplicationContext(), "Data Add", Toast.LENGTH_SHORT);
-                    dialog.dismiss();
-                } catch (NumberFormatException e) {
-                    amount.setError("Illegal Amount");
+            try {
+                int ammint = Integer.parseInt(mAmount);
+                if (TextUtils.isEmpty(mType)) {
+                    type.setError(reqFailed);
+                    return;
                 }
+                if (TextUtils.isEmpty(mAmount)) {
+                    amount.setError(reqFailed);
+                    return;
+                }
+
+                String id = mApartmentDatabase.push().getKey();
+                String mDate = DateFormat.getDateInstance().format(new Date());
+                ShoppingData shoppingData = new ShoppingData(mType, ammint, mNote, mDate, id);
+                mApartmentDatabase.child(id).setValue(shoppingData);    ////
+                Toast.makeText(getApplicationContext(), dataAdd, Toast.LENGTH_SHORT);
+                dialog.dismiss();
+            } catch (NumberFormatException e) {
+                amount.setError(errorAmount);
             }
         });
 
@@ -158,7 +155,6 @@ public class ShoppinglistActivity extends AppCompatActivity {
                 MyViewHolder.class,
                 mApartmentDatabase
         ) {
-
 
             @Override
             protected void populateViewHolder(MyViewHolder myViewHolder, ShoppingData model, int i) {
@@ -227,15 +223,10 @@ public class ShoppinglistActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();
-//            Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
-//            newIntent.putExtra(apartmentID, code);
-//            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(newIntent);
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 

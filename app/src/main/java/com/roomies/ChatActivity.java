@@ -8,15 +8,11 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,18 +27,10 @@ import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
     private Intent menuIntent;
     private FirebaseAuth mAuth;
-    private Button mMessagesBtn;
-    private Button mShoppingBtn;
-    private Button mBillsBtn;
-    private Button mAssignmentsBtn;
-    private Button mFinancialBtn;
-    private String image;
     private String code;
     private String apartmentID = "apartmentID";
-    private String imageUrl = "imageUrl";
     private DatabaseReference mDatabase;
     private ListView chatList;
     private EditText chatInput;
@@ -59,30 +47,27 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         chatToolbar = findViewById(R.id.chat_toolbar);
         setSupportActionBar(chatToolbar);
-        getSupportActionBar().setTitle("Chat Status");
+        getSupportActionBar().setTitle(getResources().getString(R.string.Chat));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mAuth = FirebaseAuth.getInstance();
         findAll();
         menuIntent = getIntent();
-        if(!apartmentID.equals(null)) {
+        if (!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code).child("chat");
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                user_msg_key = mDatabase.push().getKey();
-                mDatabase.updateChildren(map);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Apartments)).child(code).child(getResources().getString(R.string.chat));
+        sendButton.setOnClickListener(view -> {
+            Map<String, Object> map = new HashMap<>();
+            user_msg_key = mDatabase.push().getKey();
+            mDatabase.updateChildren(map);
 
-                DatabaseReference dbr2 = mDatabase.child(user_msg_key);
-                Map<String, Object> map2 = new HashMap<String, Object>();
-                map2.put("msg", chatInput.getText().toString());
-                map2.put("user", mAuth.getCurrentUser().getDisplayName());
-                dbr2.updateChildren(map2);
-                chatInput.setText("");
-            }
+            DatabaseReference dbr2 = mDatabase.child(user_msg_key);
+            Map<String, Object> map2 = new HashMap<>();
+            map2.put(getResources().getString(R.string.msg), chatInput.getText().toString());
+            map2.put(getResources().getString(R.string.user), mAuth.getCurrentUser().getDisplayName());
+            dbr2.updateChildren(map2);
+            chatInput.setText("");
         });
 
         mDatabase.addChildEventListener(new ChildEventListener() {
@@ -113,12 +98,12 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    public void updateConversation(DataSnapshot dataSnapshot){
+    public void updateConversation(DataSnapshot dataSnapshot) {
         String msg, user, conversation;
         Iterator i = dataSnapshot.getChildren().iterator();
-        while(i.hasNext()){
-            msg = (String) ((DataSnapshot)i.next()).getValue();
-            user = (String) ((DataSnapshot)i.next()).getValue();
+        while (i.hasNext()) {
+            msg = (String) ((DataSnapshot) i.next()).getValue();
+            user = (String) ((DataSnapshot) i.next()).getValue();
             conversation = user + ": " + msg;
             arrayAdapter.insert(conversation, arrayAdapter.getCount());
             arrayAdapter.notifyDataSetChanged();
@@ -126,12 +111,13 @@ public class ChatActivity extends AppCompatActivity {
 
         }
     }
-    private void findAll(){
+
+    private void findAll() {
         chatList = findViewById(R.id.chatListView);
         chatList.setSelection(chatList.getCount() - 1);
         chatInput = findViewById(R.id.chatInput);
         sendButton = findViewById(R.id.sendButton);
-        listConversation = new ArrayList<String>();
+        listConversation = new ArrayList<>();
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listConversation);
         chatList.setAdapter(arrayAdapter);
     }

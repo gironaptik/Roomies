@@ -102,18 +102,16 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
     private TextView signUpWindow;
     private LinearLayout loginLayout;
     private LinearLayout signUpLayout;
-    private StringBuilder mResult;
-    private List<String> options;
     private String login;
     private String sign_up;
     private ProgressDialog mProgress;
     private TextView forgotButton;
     private ImageView userAvatar;
     private Bitmap bitmap;
-    private String image;
-    private String code;
     private String apartmentID = "apartmentID";
-    private String imageUrl = "imageUrl";
+    private String profileImages = "profileImages";
+    private String joinUs = "Join Us!";
+    private String id = "id";
 
 
     @Override
@@ -128,7 +126,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
         setContentView(R.layout.activity_log_in);
         initViews();
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Users));
         mProgress = new ProgressDialog(this);
         timerHandler = new Handler();
         timerRunnable = () -> {
@@ -142,7 +140,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
         timerHandler.postDelayed(timerRunnable, 3000);
         mAuthListener = firebaseAuth -> {   /// HERE TO CHECK IF USER HAS APARTMENT ALREADY!!
             if(firebaseAuth.getCurrentUser() != null){
-                mDatabase.child(mAuth.getCurrentUser().getUid()).child("apartmentID").addValueEventListener(new ValueEventListener() {
+                mDatabase.child(mAuth.getCurrentUser().getUid()).child(apartmentID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String apartmentid = dataSnapshot.getValue(String.class);
@@ -187,7 +185,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
             signUpLayout.setVisibility(VISIBLE);
             loginLayout.setVisibility(GONE);
             signUpWindow.setVisibility(View.INVISIBLE);
-            mLoginBtn.setText("Join Us!");
+            mLoginBtn.setText(joinUs);
             mLoginBtn.setTag(sign_up);
         });
 
@@ -306,11 +304,11 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                             .build();
                     user.updateProfile(profileUpdates);
                     DatabaseReference current_userDB =  mDatabase.child(userId);
-                    current_userDB.child("name").setValue(name);
-                    current_userDB.child("email").setValue(email);
-                    current_userDB.child("apartmentID").setValue("0");
+                    current_userDB.child(getResources().getString(R.string.username)).setValue(name);
+                    current_userDB.child(getResources().getString(R.string.emailAdd)).setValue(email);
+                    current_userDB.child(apartmentID).setValue("0");
 //                    current_userDB.child("image").setValue(mAuth.getCurrentUser().getPhotoUrl());
-                    current_userDB.child("id").setValue(user.getUid());
+                    current_userDB.child(id).setValue(user.getUid());
                     mProgress.dismiss();
                     Intent mainIntent = new Intent(LogInActivity.this, ApartmentActivity.class);
                     mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -354,25 +352,12 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
         }
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == TAKE_IMAGE_CODE){
-//            switch(resultCode){
-//                case Activity.RESULT_OK:
-//                    bitmap = (Bitmap)data.getExtras().get("data");
-//                    userAvatar.setImageBitmap(bitmap);
-////                    handleUpload(bitmap);
-//            }
-//        }
-//    }
-
     private void handleUpload(Bitmap bitmap){
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         StorageReference reference = FirebaseStorage.getInstance().getReference()
-                .child("profileImages")
+                .child(profileImages)
                 .child(mAuth.getCurrentUser().getUid()+".jpeg");
         reference.putBytes(baos.toByteArray()).addOnSuccessListener(taskSnapshot ->
                 getDownloadUrl(reference)).addOnFailureListener(e -> Log.e(TAG, "OnFailure: ", e.getCause()));
@@ -392,23 +377,16 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
             @Override
             public void onSuccess(Void aVoid) {
                 mDatabase.child(mAuth.getCurrentUser().getUid()).child("image").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
-                Toast.makeText(LogInActivity.this, "Updated", Toast.LENGTH_SHORT);
-            }}).addOnFailureListener(e -> Toast.makeText(LogInActivity.this, "Profile image failed..", Toast.LENGTH_SHORT));
+                Toast.makeText(LogInActivity.this, getString(R.string.Updated), Toast.LENGTH_SHORT);
+            }}).addOnFailureListener(e -> Toast.makeText(LogInActivity.this, getString(R.string.imageFailed), Toast.LENGTH_SHORT));
     }
-
 
     @Override
     public void onPickResult(PickResult r) {
         if (r.getError() == null) {
             bitmap = r.getBitmap();
             userAvatar.setImageBitmap(bitmap);
-//            handleUpload(bitmap);
-//            getImageView().setImageBitmap(r.getBitmap());
-
-            //r.getPath();
         } else {
-            //Handle possible errors
-            //TODO: do what you have to do with r.getError();
             Toast.makeText(this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
         }
     }

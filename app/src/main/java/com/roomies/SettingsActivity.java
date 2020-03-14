@@ -3,7 +3,6 @@ package com.roomies;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -67,8 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
     private String apiKey;
     private List<String> imagesLinks;
     private String newUrl = null;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +78,11 @@ public class SettingsActivity extends AppCompatActivity {
             Places.initialize(getApplicationContext(), apiKey);
         }
         menuIntent = getIntent();
-        if(!apartmentID.equals(null)) {
+        if (!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
         findAll();
-        mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child("Apartments").child(code);
+        mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Apartments)).child(code);
         currentApartmentDetails();
 
         updateButton.setOnClickListener(new View.OnClickListener() {
@@ -92,17 +90,17 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 updateApartment();
             }
-            });
+        });
 
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "Hey! Join to our apartment with the code: "+ code;
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Join to our apartment");
+                String shareBody = getResources().getString(R.string.joinOurRoom) + code;
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.joinOurRoomTitle));
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.shareVia)));
             }
         });
 
@@ -121,8 +119,8 @@ public class SettingsActivity extends AppCompatActivity {
     private void createSliderModel() {
         slideModels = new ArrayList<>();
         slideModels.add(new SlideModel(currentApartment.getImageUrl()));
-        for(String link : imagesLinks){
-            if(!link.equals(currentApartment.getImageUrl())){
+        for (String link : imagesLinks) {
+            if (!link.equals(currentApartment.getImageUrl())) {
                 slideModels.add(new SlideModel(link));
             }
         }
@@ -142,13 +140,13 @@ public class SettingsActivity extends AppCompatActivity {
         shareButton = findViewById(R.id.share_room_button);
     }
 
-    private void updateFields(){
+    private void updateFields() {
         apartmentName.setHint(currentApartment.getName());
         String address = currentApartment.getAddress();
 
         int lastIndexOf = address.lastIndexOf(" ");
         currentApartmentAddress = address.substring(0, lastIndexOf);
-        currentApartmentAddressNumber = address.substring(lastIndexOf+1, address.length());
+        currentApartmentAddressNumber = address.substring(lastIndexOf + 1, address.length());
         apartmentAddressNumber.setHint(currentApartmentAddressNumber);
         apartmentAddress.setHint(currentApartmentAddress);
         createSliderModel();
@@ -186,26 +184,26 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    private void setBottomNavigator(){
+    private void setBottomNavigator() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.settings);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch(menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.settings:
                     return true;
             }
-            switch(menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.profile:
-                    Intent newIntent = new Intent(getApplicationContext(),ProfileActivity.class);
+                    Intent newIntent = new Intent(getApplicationContext(), ProfileActivity.class);
                     newIntent.putExtra(apartmentID, code);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                     startActivity(newIntent);
                     finish();
                     return true;
             }
-            switch(menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.home:
-                    Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
+                    Intent newIntent = new Intent(getApplicationContext(), HomeActivity.class);
                     newIntent.putExtra(apartmentID, code);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                     startActivity(newIntent);
@@ -216,7 +214,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void autoComplete(){
+    private void autoComplete() {
         PlacesClient placesClient = Places.createClient(getApplicationContext());
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
         RectangularBounds bounds = RectangularBounds.newInstance(
@@ -250,24 +248,21 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void updateApartment(){
+    private void updateApartment() {
         Apartment updateApartment = new Apartment();
-        if(apartmentName.getText().toString().trim().equals("")){
+        if (apartmentName.getText().toString().trim().equals("")) {
             updateApartment.setName(currentApartment.getName());
-        }
-        else{
+        } else {
             updateApartment.setName(apartmentName.getText().toString().trim());
         }
-        if(apartmentAddress.getText().toString().trim().equals("")){
+        if (apartmentAddress.getText().toString().trim().equals("")) {
             updateApartment.setAddress(currentApartment.getAddress());
+        } else {
+            updateApartment.setAddress(apartmentAddress.getText().toString().trim() + " " + apartmentAddressNumber.getText().toString().trim());
         }
-        else{
-            updateApartment.setAddress(apartmentAddress.getText().toString().trim() + " "  + apartmentAddressNumber.getText().toString().trim());
-        }
-        if(newUrl.equals(null)){
+        if (newUrl.equals(null)) {
             updateApartment.setImageUrl(currentApartment.getImageUrl());
-        }
-        else{
+        } else {
             updateApartment.setImageUrl(newUrl);
         }
         mApartmentDatabase.child(imageUrl).setValue(updateApartment.getImageUrl());
@@ -277,8 +272,4 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        // Do Here what ever you want do on back press;
-//    }
 }

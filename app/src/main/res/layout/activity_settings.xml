@@ -140,8 +140,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/proximathin"
-                    android:background="@color/colorButtonBackground"
+                    android:fontFamily="@font/proximaregular"
+                    android:background="@drawable/circle_layout"
+                    android:padding="10dp"
                     android:text="Update" />
 
             </LinearLayout>
