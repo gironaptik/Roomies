@@ -45,6 +45,8 @@ public class ShoppinglistActivity extends AppCompatActivity {
     private String reqFailed = "Required failed";
     private String dataAdd = "Data Add";
     private String errorAmount = "Illegal Amount";
+    private String many = "many";
+    private String one = "one";
     private FloatingActionButton fab_btn;
     private RecyclerView recyclerView;
     private TextView amountText;
@@ -90,7 +92,6 @@ public class ShoppinglistActivity extends AppCompatActivity {
                     totalAmount += shoppingData.getAmount();
                     String tAmount = totalAmount + ".00";
                     amountText.setText(tAmount);
-
                 }
             }
 
@@ -164,11 +165,25 @@ public class ShoppinglistActivity extends AppCompatActivity {
                 myViewHolder.setType(model.getType());
 
                 myViewHolder.my_view.setOnClickListener(view -> {
-                    postKey = getRef(i).getKey();
-                    type = model.getType();
-                    note = model.getNote();
-                    amount = model.getAmount();
-                    updateDate();
+                    try {
+                        postKey = getRef(i).getKey();
+                        type = model.getType();
+                        note = model.getNote();
+                        amount = model.getAmount();
+                        if(i != 0) {
+                            updateDate(many);
+                        }
+                        else{
+                            updateDate(one);
+                        }
+                    }
+                    catch (IndexOutOfBoundsException o){
+                        postKey = getRef(0).getKey();
+                        type = model.getType();
+                        note = model.getNote();
+                        amount = model.getAmount();
+                        updateDate(one);
+                    }
                 });
             }
 
@@ -177,7 +192,7 @@ public class ShoppinglistActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    public void updateDate() {
+    public void updateDate(String status) {
 
         AlertDialog.Builder myDialog = new AlertDialog.Builder(ShoppinglistActivity.this);
         LayoutInflater inflater = LayoutInflater.from(ShoppinglistActivity.this);
@@ -211,6 +226,10 @@ public class ShoppinglistActivity extends AppCompatActivity {
         });
         btnDelete.setOnClickListener(view -> {
             mApartmentDatabase.child(postKey).removeValue();
+            if(status == one){
+                String tAmount = "0.00";
+                amountText.setText(tAmount);
+            }
             dialog.dismiss();
         });
 

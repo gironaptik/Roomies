@@ -53,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/proximaregular"
-                        android:text="0000"
+                        android:text="0.00"
                         android:padding="10dp"
                         android:textAppearance="?android:textAppearanceMedium"/>
                 </RelativeLayout>
