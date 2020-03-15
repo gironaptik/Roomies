@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,8 +95,9 @@ public class IntroFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String apartmentCode = joinRoomCode.getText().toString();
-                if (apartmentCode.equals(""))
+                if (TextUtils.isEmpty(apartmentCode)) {
                     Toast.makeText(getContext(), getResources().getString(R.string.typeSomething), Toast.LENGTH_LONG).show();
+                }
                 else {
                     if (dataSnapshot.hasChild(apartmentCode)) {
                         DatabaseReference mnApartmentDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Apartments));

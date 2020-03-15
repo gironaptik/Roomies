@@ -1,4 +1,4 @@
-package com.roomies;
+package com.roomies.Model;
 
 public class User {
     public String id;
