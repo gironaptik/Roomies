@@ -157,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setBottomNavigator(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.getMenu().findItem(R.id.home_btn).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch(menuItem.getItemId()){
                 case R.id.settings:
@@ -171,9 +171,8 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.profile:
                     Intent newIntent = new Intent(getApplicationContext(),ProfileActivity.class);
                     newIntent.putExtra(apartmentID, code);
-//                    overridePendingTransition(R.anim.fade_out, R.anim.fade_out);
+                    overridePendingTransition(R.anim.fade_out, R.anim.fade_out);
                     startActivity(newIntent);
-//                    finish();
                     return true;
             }
             switch(menuItem.getItemId()){
@@ -251,5 +250,11 @@ public class HomeActivity extends AppCompatActivity {
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBottomNavigator();
     }
 }

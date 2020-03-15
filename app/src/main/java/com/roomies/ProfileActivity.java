@@ -144,7 +144,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private void setBottomNavigator() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.profile);
+        bottomNavigationView.getMenu().findItem(R.id.profile).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.settings:
@@ -160,7 +160,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                     return true;
             }
             switch (menuItem.getItemId()) {
-                case R.id.home:
+                case R.id.home_btn:
                     Intent newIntent = new Intent(getApplicationContext(), HomeActivity.class);
                     newIntent.putExtra(apartmentID, code);
                     overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
@@ -260,7 +260,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         apartmentDatabase.child(getResources().getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).removeValue();
         apartmentDatabase.child(financialBalance).child(mAuth.getCurrentUser().getUid()).removeValue();
         finish();
-
     }
 
     @Override

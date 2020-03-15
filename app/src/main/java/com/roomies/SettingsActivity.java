@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -186,7 +187,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void setBottomNavigator() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.settings);
+        bottomNavigationView.getMenu().findItem(R.id.settings).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.settings:
@@ -202,7 +203,7 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
             }
             switch (menuItem.getItemId()) {
-                case R.id.home:
+                case R.id.home_btn:
                     Intent newIntent = new Intent(getApplicationContext(), HomeActivity.class);
                     newIntent.putExtra(apartmentID, code);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
@@ -250,14 +251,18 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateApartment() {
         Apartment updateApartment = new Apartment();
-        if (apartmentName.getText().toString().trim().equals("")) {
+        if (TextUtils.isEmpty(apartmentName.getText().toString().trim())) {
             updateApartment.setName(currentApartment.getName());
         } else {
             updateApartment.setName(apartmentName.getText().toString().trim());
         }
-        if (apartmentAddress.getText().toString().trim().equals("")) {
+        if (TextUtils.isEmpty(apartmentAddress.getText().toString().trim()) && TextUtils.isEmpty(apartmentAddressNumber.getText().toString())) {
             updateApartment.setAddress(currentApartment.getAddress());
-        } else {
+        }
+        if(!TextUtils.isEmpty(apartmentAddressNumber.getText().toString())){
+            updateApartment.setAddress(currentApartmentAddress + " " + apartmentAddressNumber.getText().toString().trim());
+        }
+        else {
             updateApartment.setAddress(apartmentAddress.getText().toString().trim() + " " + apartmentAddressNumber.getText().toString().trim());
         }
         if (newUrl.equals(null)) {
