@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FinancialActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -130,7 +131,13 @@ public class FinancialActivity extends AppCompatActivity implements DatePickerDi
         pieDataSet = new PieDataSet(value, getResources().getString(R.string.Balance));
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
+        Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.proximaregular);
+        pieChart.setEntryLabelTypeface(typeface);
+        pieChart.setEntryLabelTextSize(15f);
+        pieChart.setEntryLabelColor(getResources().getColor(R.color.colorButtonAccent));
+
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
     }
 
     private void updateChart() {
@@ -194,7 +201,9 @@ public class FinancialActivity extends AppCompatActivity implements DatePickerDi
             }
 
             String id = mApartmentDatabase.push().getKey();
-            String mDate = DateFormat.getDateInstance().format(new Date());
+            Locale locale = new Locale("en");
+            String mDate = DateFormat.getDateInstance(
+                    DateFormat.DEFAULT, locale).format(new Date());
             FinanceData data = new FinanceData(mBillTypeName, mSum, mFrom, mTo, id);
             mApartmentDatabase.child(id).setValue(data);
             Toast.makeText(getApplicationContext(), appData, Toast.LENGTH_SHORT);
@@ -315,6 +324,7 @@ public class FinancialActivity extends AppCompatActivity implements DatePickerDi
                     balanceList.add(userBalance);
                     try {
                         TextView currentBalance = new TextView(getApplicationContext());
+                        currentBalance.setMaxLines(2);
                         currentBalance.setText("\u25CF " + userBalance.getName() + ": " + userBalance.getBalance() + " ");
                         currentBalance.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         Typeface typeface = ResourcesCompat.getFont(getApplicationContext(), R.font.proximabold);

@@ -31,6 +31,7 @@ import com.roomies.Model.ShoppingData;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ShoppinglistActivity extends AppCompatActivity {
 
@@ -133,7 +134,9 @@ public class ShoppinglistActivity extends AppCompatActivity {
                 }
 
                 String id = mApartmentDatabase.push().getKey();
-                String mDate = DateFormat.getDateInstance().format(new Date());
+                Locale locale = new Locale("en");
+                String mDate = DateFormat.getDateInstance(
+                        DateFormat.DEFAULT, locale).format(new Date());
                 ShoppingData shoppingData = new ShoppingData(mType, ammint, mNote, mDate, id);
                 mApartmentDatabase.child(id).setValue(shoppingData);    ////
                 Toast.makeText(getApplicationContext(), dataAdd, Toast.LENGTH_SHORT);

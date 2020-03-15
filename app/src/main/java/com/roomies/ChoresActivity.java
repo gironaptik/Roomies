@@ -32,6 +32,7 @@ import com.roomies.Model.ChoreData;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ChoresActivity extends AppCompatActivity {
 
@@ -113,7 +114,9 @@ public class ChoresActivity extends AppCompatActivity {
             }
 
             String id = mApartmentDatabase.push().getKey();
-            String mDate = DateFormat.getDateInstance().format(new Date());
+            Locale locale = new Locale("en");
+            String mDate = DateFormat.getDateInstance(
+                    DateFormat.DEFAULT, locale).format(new Date());
             ChoreData data = new ChoreData(mBy, choreKind, mNote, mDate, id);
             mApartmentDatabase.child(id).setValue(data);
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.dataAdd), Toast.LENGTH_SHORT);
@@ -138,11 +141,12 @@ public class ChoresActivity extends AppCompatActivity {
             protected void populateViewHolder(ChoresActivity.MyViewHolder myViewHolder, ChoreData model, int i) {
                 myViewHolder.setDate(model.getDate());
                 myViewHolder.setTitle(choreKind);
-                myViewHolder.setUserName(mAuth.getCurrentUser().getDisplayName());
+                myViewHolder.setUserName(model.getBy());
                 myViewHolder.setNote(model.getNote());
 
                 Button acceptButton = myViewHolder.my_view.findViewById(R.id.chore_accept_button);
                 acceptButton.setOnClickListener(view -> {
+                    acceptButton.setBackgroundResource(R.drawable.accept);
                     postKey = getRef(i).getKey();
                     deleteChore();
                 });
