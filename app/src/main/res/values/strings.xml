@@ -56,11 +56,16 @@
     <string name="addressDB">address</string>
     <string name="financialBalance">financialBalance</string>
     <string name="balance">balance</string>
+    <string name="Balance">Balance</string>
     <string name="emailAdd">email</string>
     <string name="Updated">Updated</string>
     <string name="imageFailed">Profile image failed..</string>
     <string name="typeSomething">You should type something</string>
     <string name="notExist">Apartment code not Exist!</string>
+    <string name="requiredFailed">"Required failed.."</string>
+    <string name="choresList">"Chores List"</string>
+    <string name="dataAdd">"Data Add"</string>
+
 
 
 

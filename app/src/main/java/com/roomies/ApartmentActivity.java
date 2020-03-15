@@ -19,18 +19,14 @@ import com.github.paolorotolo.appintro.model.SliderPage;
 
 public class ApartmentActivity extends AppIntro2 implements CommunicationInterface{
 
-    private Button newRoom;
     private int counter = 0;
     private Fragment introFragment;
     private Fragment newRoomFragment;
-    private int slidesNum;
-    private Bundle state;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        state = savedInstanceState;
         showPagerIndicator(false);
         setAppIntro();
     }
@@ -40,8 +36,6 @@ public class ApartmentActivity extends AppIntro2 implements CommunicationInterfa
             introFragment = new IntroFragment();
             newRoomFragment = new NewRoomFragment();
             addSlide(introFragment);
-//            addSlide(AppIntroFragment.newInstance("First App intro", "First App intro details", R.drawable.one,
-//                    ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)));
             addSlide(newRoomFragment);
             setNextPageSwipeLock(true);
             showPagerIndicator(false);
