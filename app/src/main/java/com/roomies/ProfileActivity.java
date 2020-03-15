@@ -44,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
     private DatabaseReference userDatabase;
     private DatabaseReference apartmentDatabase;
@@ -69,7 +68,6 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
     private ProgressDialog mProgress;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         mProgress = new ProgressDialog(this);
         findAllById();
         menuIntent = getIntent();
-        if(!apartmentID.equals(null)) {
+        if (!apartmentID.equals(null)) {
             code = menuIntent.getExtras().getString(apartmentID);
         }
         apartmentDatabase = mDatabase.child(getResources().getString(R.string.Apartments)).child(code);
@@ -106,10 +104,10 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
         saveChanges.setOnClickListener(view -> handleUpload(bitmap));
         leaveApartment.setOnClickListener(view -> leaveApartment());
-        logout.setOnClickListener(view ->signOut());
+        logout.setOnClickListener(view -> signOut());
     }
 
-    private void findAllById(){
+    private void findAllById() {
         userEmail = findViewById(R.id.emailText);
         userEmail.setText(mAuth.getCurrentUser().getEmail());
         editName = findViewById(R.id.editNameEditText);
@@ -130,7 +128,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!editName.getText().equals(null)){
+                if (!editName.getText().equals(null)) {
                     credential = EmailAuthProvider
                             .getCredential(mAuth.getCurrentUser().getEmail(), editCurrentPassword.getText().toString());
                 }
@@ -143,26 +141,27 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         bitmap = BitmapFactory.decodeResource(getResources(),
                 circularImageView.getImageAlpha());
     }
-    private void setBottomNavigator(){
+
+    private void setBottomNavigator() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profile);
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch(menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.settings:
-                    Intent newIntent = new Intent(getApplicationContext(),SettingsActivity.class);
+                    Intent newIntent = new Intent(getApplicationContext(), SettingsActivity.class);
                     newIntent.putExtra(apartmentID, code);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                     startActivity(newIntent);
                     finish();
                     return true;
             }
-            switch(menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.profile:
                     return true;
             }
-            switch(menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.home:
-                    Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
+                    Intent newIntent = new Intent(getApplicationContext(), HomeActivity.class);
                     newIntent.putExtra(apartmentID, code);
                     overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                     startActivity(newIntent);
@@ -173,24 +172,24 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         });
     }
 
-    private void handleUpload(Bitmap bitmap){
+    private void handleUpload(Bitmap bitmap) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         StorageReference reference = FirebaseStorage.getInstance().getReference()
                 .child("profileImages")
-                .child(mAuth.getCurrentUser().getUid()+".jpeg");
+                .child(mAuth.getCurrentUser().getUid() + ".jpeg");
         reference.putBytes(baos.toByteArray()).addOnSuccessListener(taskSnapshot -> {
             getDownloadUrl(reference);
             mProgress.dismiss();
         }).addOnFailureListener(e -> Log.e(TAG, "OnFailure: ", e.getCause()))
-        .addOnProgressListener(taskSnapshot -> {
-            mProgress.setMessage("Updating...");
-            mProgress.show();
-        });
+                .addOnProgressListener(taskSnapshot -> {
+                    mProgress.setMessage("Updating...");
+                    mProgress.show();
+                });
     }
 
-    private void getDownloadUrl(StorageReference reference){
+    private void getDownloadUrl(StorageReference reference) {
         reference.getDownloadUrl().addOnSuccessListener(uri -> {
             Log.d(TAG, "onSuccess: " + uri);
             newImageUri = uri;
@@ -209,7 +208,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
         }
     }
 
-    private void updateUser(){
+    private void updateUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userDatabase.child(image).setValue(newImageUri.toString());
         userDatabase.child(getResources().getString(R.string.username)).setValue(editName.getText().toString());
@@ -225,7 +224,7 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                         Log.d(TAG, updateNotification);
                     }
                 });
-        if(!editCurrentPassword.getText().toString().equals(null) && !editNewPassword.getText().toString().equals(null) && credential != null){
+        if (!editCurrentPassword.getText().toString().equals(null) && !editNewPassword.getText().toString().equals(null) && credential != null) {
             user.reauthenticate(credential)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -234,31 +233,36 @@ public class ProfileActivity extends AppCompatActivity implements IPickResult {
                                     Log.d(TAG, "Password updated");
                                 } else {
                                     Log.d(TAG, "Error password not updated");
-                            }
-                        });
-                        }
-                        else {
+                                }
+                            });
+                        } else {
                             Log.d(TAG, "Error auth failed");
                         }
                     });
         }
     }
 
-    private void signOut(){
-            FirebaseAuth.getInstance().signOut();
-            Intent i=new Intent(getApplicationContext(),LogInActivity.class);
-            startActivity(i);
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(getApplicationContext(), LogInActivity.class);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        startActivity(i);
+        finish();
 
     }
-    private void leaveApartment(){
+
+    private void leaveApartment() {
         userDatabase.child(apartmentID).setValue("0");
         Intent intent = new Intent(getApplicationContext(), ApartmentActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         startActivity(intent);
         apartmentDatabase.child(getResources().getString(R.string.users)).child(mAuth.getCurrentUser().getUid()).removeValue();
         apartmentDatabase.child(financialBalance).child(mAuth.getCurrentUser().getUid()).removeValue();
+        finish();
 
     }
+
     @Override
     public void onBackPressed() {
         finish();

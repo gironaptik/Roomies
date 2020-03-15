@@ -39,6 +39,8 @@ public class ApartmentActivity extends AppIntro2 implements CommunicationInterfa
             addSlide(newRoomFragment);
             setNextPageSwipeLock(true);
             showPagerIndicator(false);
+            showSkipButton(false);
+            setBackButtonVisibilityWithDone(false);
             counter += 1;
         }
 
@@ -52,20 +54,6 @@ public class ApartmentActivity extends AppIntro2 implements CommunicationInterfa
         if(counter > 2){
             getPager().goToNextSlide();
         }
-    }
-
-    @Override
-    public void onDonePressed(Fragment currentFragment) {
-        super.onDonePressed(currentFragment);
-        Intent menuIntent = new Intent(getApplicationContext(), ApartmentActivity.class);
-        startActivity(menuIntent);
-    }
-
-    @Override
-    public void onSkipPressed(Fragment currentFragment) {
-        super.onSkipPressed(currentFragment);
-        Intent menuIntent = new Intent(getApplicationContext(), ApartmentActivity.class);
-        startActivity(menuIntent);
     }
 
     @Override

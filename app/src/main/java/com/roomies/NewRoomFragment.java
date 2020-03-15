@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -159,36 +160,41 @@ public class NewRoomFragment extends Fragment {
         mApartmentName = mApartmentNameView.getText().toString();
         mAddress = mAddressField.getText().toString();
         mApartmentNumber = mApartmentNumberView.getText().toString();
-        DatabaseReference apartmentsDB = mDatabase.child(apartments);
-        mDatabase.child(counter).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long number = (Long) dataSnapshot.getValue();
-                mDatabase.child(counter).setValue(number + 1);
-                idCounter = number + 1;
-                Hashids hashids = new Hashids(saltValue);
-                hash = hashids.encode(idCounter);
-                DatabaseReference newApartmentDB = apartmentsDB.child(hash);
-                newApartmentDB.child(id).setValue(hash);
-                newApartmentDB.child(getResources().getString(R.string.imageUrl)).setValue(mApartmentImage);
-                newApartmentDB.child(getResources().getString(R.string.username)).setValue(mApartmentName);
-                newApartmentDB.child(getResources().getString(R.string.addressDB)).setValue(mAddress + " " + mApartmentNumber);
-                newApartmentDB.child(getResources().getString(R.string.users)).child(mAuthUser.getUid()).setValue(mAuthUser.getPhotoUrl().toString());
-                newApartmentDB.child(getResources().getString(R.string.financialBalance)).child(mAuth.getCurrentUser().getUid()).child(getResources().getString(R.string.username)).setValue(mAuth.getCurrentUser().getDisplayName());
-                newApartmentDB.child(getResources().getString(R.string.financialBalance)).child(mAuth.getCurrentUser().getUid()).child(getResources().getString(R.string.balance)).setValue(0);
-                mDatabase.child(getResources().getString(R.string.Users)).child(mAuth.getCurrentUser().getUid()).child(apartmentID).setValue(hash);
-                Intent menuIntent = new Intent(getContext(), HomeActivity.class);
-                menuIntent.putExtra(apartmentID, hash);
-                startActivity(menuIntent);
+        if(TextUtils.isEmpty(mApartmentName) || TextUtils.isEmpty(mAddress) || TextUtils.isEmpty(mApartmentNumber)) {
+            Toast.makeText(getActivity(), "Fields are empty.", Toast.LENGTH_LONG).show();
+        }
+        else {
+            DatabaseReference apartmentsDB = mDatabase.child(apartments);
+            mDatabase.child(counter).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    long number = (Long) dataSnapshot.getValue();
+                    mDatabase.child(counter).setValue(number + 1);
+                    idCounter = number + 1;
+                    Hashids hashids = new Hashids(saltValue);
+                    hash = hashids.encode(idCounter);
+                    DatabaseReference newApartmentDB = apartmentsDB.child(hash);
+                    newApartmentDB.child(id).setValue(hash);
+                    newApartmentDB.child(getResources().getString(R.string.imageUrl)).setValue(mApartmentImage);
+                    newApartmentDB.child(getResources().getString(R.string.username)).setValue(mApartmentName);
+                    newApartmentDB.child(getResources().getString(R.string.addressDB)).setValue(mAddress + " " + mApartmentNumber);
+                    newApartmentDB.child(getResources().getString(R.string.users)).child(mAuthUser.getUid()).setValue(mAuthUser.getPhotoUrl().toString());
+                    newApartmentDB.child(getResources().getString(R.string.financialBalance)).child(mAuth.getCurrentUser().getUid()).child(getResources().getString(R.string.username)).setValue(mAuth.getCurrentUser().getDisplayName());
+                    newApartmentDB.child(getResources().getString(R.string.financialBalance)).child(mAuth.getCurrentUser().getUid()).child(getResources().getString(R.string.balance)).setValue(0);
+                    mDatabase.child(getResources().getString(R.string.Users)).child(mAuth.getCurrentUser().getUid()).child(apartmentID).setValue(hash);
+                    Intent menuIntent = new Intent(getContext(), HomeActivity.class);
+                    menuIntent.putExtra(apartmentID, hash);
+                    getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    startActivity(menuIntent);
+                    getActivity().finish();
+                }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+        }
     }
 
 

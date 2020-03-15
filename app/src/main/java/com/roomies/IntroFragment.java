@@ -106,7 +106,9 @@ public class IntroFragment extends Fragment {
                         Intent apartmentIntent = new Intent(getContext(), HomeActivity.class);
                         apartmentIntent.putExtra(apartmentID, joinRoomCode.getText().toString());
                         apartmentIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         startActivity(apartmentIntent);
+                        getActivity().finish();
                     } else
                         Toast.makeText(getContext(), getResources().getString(R.string.notExist), Toast.LENGTH_LONG).show();
                 }
@@ -122,8 +124,9 @@ public class IntroFragment extends Fragment {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getContext(), LogInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         startActivity(intent);
-
+        getActivity().finish();
     }
 
 }

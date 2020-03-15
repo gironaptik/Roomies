@@ -145,12 +145,16 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String apartmentid = dataSnapshot.getValue(String.class);
                         if(apartmentid.equals("0") || apartmentid == null){
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             startActivity(new Intent(LogInActivity.this, ApartmentActivity.class));
+                            finish();
                         }
                         else{
                             Intent newIntent = new Intent(getApplicationContext(),HomeActivity.class);
                             newIntent.putExtra(apartmentID, apartmentid);
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             startActivity(newIntent);
+                            finish();
                         }
                     }
 
@@ -300,14 +304,12 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                     FirebaseUser user = mAuth.getCurrentUser();
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(name)
-//                            .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/roomies-85581.appspot.com/o/2415.jpg?alt=media&token=04892b10-d93e-4fd5-89d1-8a656e533b2e"))
                             .build();
                     user.updateProfile(profileUpdates);
                     DatabaseReference current_userDB =  mDatabase.child(userId);
                     current_userDB.child(getResources().getString(R.string.username)).setValue(name);
                     current_userDB.child(getResources().getString(R.string.emailAdd)).setValue(email);
                     current_userDB.child(apartmentID).setValue("0");
-//                    current_userDB.child("image").setValue(mAuth.getCurrentUser().getPhotoUrl());
                     current_userDB.child(id).setValue(user.getUid());
                     mProgress.dismiss();
                     Intent mainIntent = new Intent(LogInActivity.this, ApartmentActivity.class);
