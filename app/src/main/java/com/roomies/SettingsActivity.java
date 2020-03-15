@@ -260,7 +260,7 @@ public class SettingsActivity extends AppCompatActivity {
             updateApartment.setAddress(currentApartment.getAddress());
         }
         if(!TextUtils.isEmpty(apartmentAddressNumber.getText().toString())){
-            updateApartment.setAddress(currentApartmentAddress + " " + apartmentAddressNumber.getText().toString().trim());
+            updateApartment.setAddress(apartmentAddress.getText().toString().trim() + " " + apartmentAddressNumber.getText().toString().trim());
         }
         else {
             updateApartment.setAddress(apartmentAddress.getText().toString().trim() + " " + apartmentAddressNumber.getText().toString().trim());

@@ -140,15 +140,15 @@ public class ChoresActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ChoresActivity.MyViewHolder myViewHolder, ChoreData model, int i) {
                 myViewHolder.setDate(model.getDate());
-                myViewHolder.setTitle(choreKind);
+                myViewHolder.setTitle(model.getChoreKind());
                 myViewHolder.setUserName(model.getBy());
                 myViewHolder.setNote(model.getNote());
-
                 Button acceptButton = myViewHolder.my_view.findViewById(R.id.chore_accept_button);
                 acceptButton.setOnClickListener(view -> {
-                    acceptButton.setBackgroundResource(R.drawable.accept);
-                    postKey = getRef(i).getKey();
-                    deleteChore();
+                        acceptButton.setBackgroundResource(R.drawable.accept);
+                        postKey = getRef(myViewHolder.getAdapterPosition()).getKey();
+                        deleteChore();
+
                 });
             }
 
