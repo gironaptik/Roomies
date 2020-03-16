@@ -101,6 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
                 String shareBody = getResources().getString(R.string.joinOurRoom) + code;
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.joinOurRoomTitle));
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_in);
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.shareVia)));
             }
         });

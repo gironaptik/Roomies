@@ -58,7 +58,6 @@ public class FinancialActivity extends AppCompatActivity implements DatePickerDi
     private FirebaseAuth mAuth;
     private DatabaseReference mApartmentDatabase;
     private DatabaseReference mApartmentUserDatabase;
-    private DatabaseReference mUserDatabase;
     private Intent incomingIntent;
     private String code;
     private String apartmentID = "apartmentID";
@@ -105,7 +104,6 @@ public class FinancialActivity extends AppCompatActivity implements DatePickerDi
         }
         mApartmentDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Apartments)).child(code).child(financial);
         mApartmentUserDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Apartments)).child(code).child(getResources().getString(R.string.financialBalance));
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child(getResources().getString(R.string.Users));
         mAuth = FirebaseAuth.getInstance();
         fab_btn = findViewById(R.id.add_finance_button);
         mApartmentDatabase.keepSynced(true);
