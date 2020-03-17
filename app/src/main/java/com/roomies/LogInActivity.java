@@ -166,7 +166,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
 
             }
         };
-
+        forgotPassword();
         mLoginBtn.setOnClickListener(view -> {
             if(mLoginBtn.getTag().equals(login)) {
                 startSignIn();
@@ -206,6 +206,7 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
                 PickImageDialog.build(new PickSetup()).show(LogInActivity.this);
             }
         });
+
     }
 
     @Override
@@ -338,13 +339,26 @@ public class LogInActivity extends AppCompatActivity implements IPickResult {
         }
     }
 
-    private void forgotPassword(View view){
-        FirebaseAuth.getInstance().sendPasswordResetEmail(mEmailField.getText().toString())
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "Email sent.");
-                    }
-                });
+    private void forgotPassword(){
+        forgotButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(TextUtils.isEmpty(mEmailField.getText())){
+                    Toast.makeText(LogInActivity.this, "Please write your Email first", Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(mEmailField.getText().toString())
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LogInActivity.this, "Email sent.", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                }
+
+            }
+        });
+
     }
 
     private void takePictureIntent(){

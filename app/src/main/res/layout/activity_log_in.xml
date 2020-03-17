@@ -115,7 +115,6 @@
                     android:layout_gravity="end|center_vertical"
                     android:text="@string/forget_password"
                     android:textColor="@color/colorTextView"
-                    android:onClick="forgotPassword"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </FrameLayout>

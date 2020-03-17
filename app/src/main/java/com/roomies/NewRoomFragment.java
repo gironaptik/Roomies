@@ -130,7 +130,7 @@ public class NewRoomFragment extends Fragment {
                 new LatLng(-33.858754, 151.229596));
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 .setLocationBias(bounds)
-                .setCountry("IL")//
+                .setCountry("IL")
                 .setTypeFilter(TypeFilter.ADDRESS)
                 .setSessionToken(token)
                 .setQuery(mAddressField.getText().toString())

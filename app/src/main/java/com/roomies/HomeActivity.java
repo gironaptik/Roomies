@@ -52,7 +52,6 @@ public class HomeActivity extends AppCompatActivity {
     private List<String> usersNameList;
     private List<User> userList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
